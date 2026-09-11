@@ -53,5 +53,7 @@ export function useActionMessage() {
   return (
     key: ActionMessageKey | null | undefined,
     values?: Record<string, string | number>,
-  ): string => (key ? interpolate(messages[key], values) : '')
+    // `messages[key] ?? key` mirrors createTranslator: an unknown key renders visibly for
+    // diagnosis instead of vanishing.
+  ): string => (key ? interpolate(messages[key] ?? key, values) : '')
 }

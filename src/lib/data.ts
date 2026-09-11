@@ -59,11 +59,18 @@ function pickText(english: string | null, indonesian: string | null, locale: Loc
 
 /**
  * Falls back as a whole array rather than element by element: a half-translated ordered instruction
- * list is worse than a consistently English one. `activities_steps_ind_shape` enforces equal length.
+ * list is worse than a consistently English one.
+ *
+ * The database constrains `steps_ind` to be an array but deliberately does not require a matching
+ * length, so that English steps stay editable on their own. A count mismatch therefore means the
+ * translation is stale, and the English list wins until someone retranslates it.
  */
 function pickSteps(english: unknown, indonesian: unknown, locale: Locale): string[] {
-  const preferred = locale === 'id' && Array.isArray(indonesian) ? indonesian : english
-  return Array.isArray(preferred) ? preferred.map(String) : []
+  const source = Array.isArray(english) ? english : []
+  const translated = Array.isArray(indonesian) ? indonesian : null
+  const preferred =
+    locale === 'id' && translated && translated.length === source.length ? translated : source
+  return preferred.map(String)
 }
 
 interface StudentLearningSummaryRow {

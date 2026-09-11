@@ -28,6 +28,7 @@ files, not tracked application source, and their values MUST not be copied into 
 | File                                         | Responsibility                                                                                                                                                                                     |
 | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `.github/workflows/supabase-healthcheck.yml` | Runs a scheduled/manual read-only RPC call using GitHub secrets, with minimal repository permissions and concurrency control.                                                                      |
+| `scripts/check-i18n.cjs`                     | Verifies what the compiler cannot: that every Bahasa Indonesia message preserves the `{placeholder}` names its English source declares, and that neither dictionary has an orphan key.             |
 | `scripts/check-supabase.cjs`                 | Loads local public credentials, calls representative REST endpoints, verifies offline-sync and bilingual-content schema readiness, and prints actionable schema errors without displaying secrets. |
 | `scripts/generate-pwa-icons.cjs`             | Uses Sharp to generate PNG favicons, Apple touch icons, regular icons, and a maskable icon from the source SVG.                                                                                    |
 
@@ -93,7 +94,6 @@ files, not tracked application source, and their values MUST not be copied into 
 | `src/lib/i18n/server.ts`              | Server-only locale and dictionary access: `getLocale`, `getTranslator`, and the browser-visible `getUiMessages` subset, all request-cached.                                             |
 | `src/lib/i18n/client.tsx`             | `LocaleProvider` plus the `useT`, `useLocale`, and `useActionMessage` hooks for client components.                                                                                      |
 | `src/lib/supabase/env.ts`             | Validates and returns the required public Supabase URL/key without exposing any privileged secret.                                                                                      |
-| `src/lib/supabase/client.ts`          | Creates a Supabase browser client for code that needs browser-side access.                                                                                                              |
 | `src/lib/supabase/server.ts`          | Creates a cookie-aware Supabase server client; cookie writes safely defer to the proxy when invoked from Server Components.                                                             |
 | `src/lib/supabase/proxy.ts`           | Refreshes auth claims/cookies and performs optimistic login/protected-route redirects while preserving API JSON behavior.                                                               |
 
@@ -124,6 +124,7 @@ request them directly.
 | `supabase/migrations/20260822_project_healthcheck.sql`         | Adds the minimal anonymous read-only health-check RPC used by GitHub Actions.                                                                                                                                                          |
 | `supabase/migrations/20260823_evidence_security_hardening.sql` | Restricts evidence uploads to students and makes field submissions reference an existing, student-owned private object.                                                                                                                |
 | `supabase/migrations/20260911_bilingual_content.sql`           | Adds Bahasa Indonesia content columns, translation review timestamps, the staleness trigger, the operator review queue view, and Indonesian pilot content.                                                                             |
+| `supabase/migrations/20260911_translation_audit_followups.sql` | Relaxes the translated-steps constraint to a shape check so English content stays independently editable, and drops the unnecessary privilege elevation on the staleness trigger.                                                      |
 
 ## Existing operator documentation
 

@@ -16,7 +16,16 @@ export type Translator<Allowed extends MessageKey = MessageKey> = <Key extends A
     : [values: Record<Placeholder<MessageSource[Key]>, string | number>]
 ) => string
 
-export function interpolate(template: string, values?: Record<string, string | number>): string {
+/**
+ * Total by construction: a missing template yields an empty string rather than throwing. Stored
+ * message keys outlive deployments (see the offline outbox), so a key the running dictionary no
+ * longer has must degrade, not crash.
+ */
+export function interpolate(
+  template: string | undefined,
+  values?: Record<string, string | number>,
+): string {
+  if (!template) return ''
   if (!values) return template
   return template.replace(/\{(\w+)\}/g, (token, name: string) =>
     name in values ? String(values[name]) : token,

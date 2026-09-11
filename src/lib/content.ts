@@ -376,7 +376,10 @@ export function getFallbackContent(locale: Locale): {
     minutes: source.minutes,
     title: pick(source.title, locale),
     description: pick(source.description, locale),
-    steps: source.steps[locale]?.length ? source.steps[locale] : source.steps.en,
+    steps:
+      source.steps[locale]?.length === source.steps.en.length
+        ? source.steps[locale]
+        : source.steps.en,
   }))
 
   return { islands, activities, badges }
