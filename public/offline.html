@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#073f3b" />
+    <title>Luring · Ocean Passport</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: #073f3b;
+        color: #fff;
+        font-family: system-ui, sans-serif;
+      }
+      .card {
+        max-width: 480px;
+        padding: 36px;
+        border-radius: 24px;
+        background: #fffefa;
+        color: #183b37;
+        box-shadow: 0 20px 60px #032b28;
+      }
+      .mark {
+        width: 54px;
+        height: 54px;
+        display: grid;
+        place-items: center;
+        border-radius: 17px;
+        background: #f4d58b;
+        font-size: 26px;
+      }
+      h1 {
+        font-family: Georgia, serif;
+        font-size: 36px;
+        margin: 22px 0 10px;
+      }
+      p {
+        color: #6a817d;
+        line-height: 1.6;
+      }
+      button {
+        margin-top: 12px;
+        border: 0;
+        border-radius: 12px;
+        padding: 12px 18px;
+        background: #0b7d72;
+        color: #fff;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="mark">≈</div>
+      <h1 data-en="The ocean is still here." data-id="Laut tetap ada di sini.">
+        Laut tetap ada di sini.
+      </h1>
+      <p
+        data-en="Your connection isn’t available right now. Submitted reflections and photos remain safely on this device and will upload after you reconnect. Reopen the app after reconnecting if you use an iPhone or iPad."
+        data-id="Koneksimu belum tersedia saat ini. Refleksi dan foto yang sudah dikirim tetap tersimpan aman di perangkat ini dan akan terunggah setelah kamu tersambung kembali. Buka ulang aplikasi setelah tersambung jika kamu memakai iPhone atau iPad."
+      >
+        Koneksimu belum tersedia saat ini. Refleksi dan foto yang sudah dikirim tetap tersimpan aman
+        di perangkat ini dan akan terunggah setelah kamu tersambung kembali. Buka ulang aplikasi
+        setelah tersambung jika kamu memakai iPhone atau iPad.
+      </p>
+      <button data-en="Try again" data-id="Coba lagi" onclick="location.reload()">Coba lagi</button>
+    </main>
+    <script>
+      /* This page is precached and dependency-free, so it localizes itself from the locale cookie.
+         That is why `lsk-locale` is deliberately not httpOnly. The markup ships in the default
+         locale (id) so it stays correct with JavaScript disabled. */
+      ;(function () {
+        var match = /(?:^|;\s*)lsk-locale=(en|id)/.exec(document.cookie)
+        var locale = match ? match[1] : 'id'
+        document.documentElement.lang = locale
+        document.title = (locale === 'en' ? 'Offline' : 'Luring') + ' · Ocean Passport'
+        var nodes = document.querySelectorAll('[data-' + locale + ']')
+        for (var index = 0; index < nodes.length; index += 1) {
+          nodes[index].textContent = nodes[index].getAttribute('data-' + locale)
+        }
+      })()
+    </script>
+  </body>
+</html>
