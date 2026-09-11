@@ -105,13 +105,12 @@ alter table public.activities
   add column if not exists translation_source_updated_at timestamptz not null default now(),
   add column if not exists translation_reviewed_at timestamptz;
 
--- A translated list falls back to English as a whole rather than mixing languages, so it must have
--- exactly as many steps as the English source.
+-- A translated list must be a JSON array. Length is deliberately NOT constrained: requiring it to
+-- match the English source would reject any English edit that changed the step count while a
+-- translation existed. The application falls back to the whole English list when counts disagree.
 alter table public.activities drop constraint if exists activities_steps_ind_shape;
 alter table public.activities add constraint activities_steps_ind_shape check (
-  steps_ind is null
-  or (jsonb_typeof(steps_ind) = 'array'
-      and jsonb_array_length(steps_ind) = jsonb_array_length(steps))
+  steps_ind is null or jsonb_typeof(steps_ind) = 'array'
 );
 
 -- Marks a translation as needing review when its English source changes. Takes only the source
@@ -121,7 +120,7 @@ alter table public.activities add constraint activities_steps_ind_shape check (
 create or replace function public.mark_translation_stale()
 returns trigger
 language plpgsql
-security definer set search_path = ''
+security invoker set search_path = ''
 as $$
 declare
   source_column text;

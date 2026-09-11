@@ -150,8 +150,12 @@ throughout this schema.
 The application reads the Indonesian value when it is present and non-blank, and falls back to
 English otherwise. `steps_ind` falls back as a whole array rather than element by element, because a
 half-translated ordered instruction list is worse than a consistently English one. The
-`activities_steps_ind_shape` check constraint enforces that a translated list is a JSON array of
-exactly the same length as its English source.
+`activities_steps_ind_shape` check constraint requires a translated list to be a JSON array, and
+deliberately does **not** require it to match the English length. An earlier revision did, which
+meant any English `steps` edit that changed the step count was rejected outright while a translation
+existed -- contradicting the rule above that English may be edited on its own. The length comparison
+now lives in the application: when the two lists differ in length the translation is treated as stale
+and the English list is shown until someone retranslates it.
 
 Editing English content therefore reaches both audiences immediately, with no deployment.
 
@@ -161,10 +165,10 @@ Every content table also carries `translation_source_updated_at` and `translatio
 translation is stale when `translation_reviewed_at is null or translation_reviewed_at <
 translation_source_updated_at`.
 
-| Function / trigger                                                | Behavior                                                                                                                           |
-| ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `public.mark_translation_stale()`                                 | `BEFORE INSERT OR UPDATE` trigger function. Receives the English source column names and derives each partner by appending `_ind`. |
-| `before_islands_translation_source` / `_badges_` / `_activities_` | Bind the function to the three content tables.                                                                                     |
+| Function / trigger                                                | Behavior                                                                                                                                                                                                                                     |
+| ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `public.mark_translation_stale()`                                 | `BEFORE INSERT OR UPDATE` trigger function. Receives the English source column names and derives each partner by appending `_ind`. Declared `security invoker` with a pinned `search_path`: it only mutates `NEW` and needs no owner rights. |
+| `before_islands_translation_source` / `_badges_` / `_activities_` | Bind the function to the three content tables.                                                                                                                                                                                               |
 
 Changing only an English column clears `translation_reviewed_at`, marking the row for review.
 Changing both languages in one statement sets `translation_reviewed_at` to `now()` — editing both

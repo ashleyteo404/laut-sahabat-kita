@@ -52,6 +52,7 @@ Before merging or deploying, run:
 npm run format:check
 npm run lint
 npm run typecheck
+npm run i18n:check
 npm run build
 npm audit
 node --check public/sw.js

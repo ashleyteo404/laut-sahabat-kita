@@ -15,6 +15,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "icons": "node scripts/generate-pwa-icons.cjs",
+    "i18n:check": "node scripts/check-i18n.cjs",
     "db:check": "node scripts/check-supabase.cjs"
   },
   "dependencies": {
