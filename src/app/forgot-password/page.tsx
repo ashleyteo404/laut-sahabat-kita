@@ -1,20 +1,15 @@
 import type { Metadata } from 'next'
-import { LoginForm } from '@/components/auth/login-form'
+import { ForgotPasswordForm } from '@/components/auth/forgot-password-form'
 import { LocaleSwitcher } from '@/components/i18n/locale-switcher'
 import { getTranslator } from '@/lib/i18n/server'
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslator()
-  return { title: t('meta.login.title') }
+  return { title: t('meta.forgot.title') }
 }
 
-export default async function LoginPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}) {
+export default async function ForgotPasswordPage() {
   const t = await getTranslator()
-  const resetLinkInvalid = (await searchParams).reset === 'invalid'
   return (
     <main className="auth-page">
       <section className="auth-story">
@@ -28,7 +23,6 @@ export default async function LoginPage({
         <div>
           <span className="hero-kicker">{t('loginPage.kicker')}</span>
           <h1>{t('loginPage.heading')}</h1>
-          <p>{t('loginPage.intro')}</p>
         </div>
         <small>{t('loginPage.islands')}</small>
       </section>
@@ -36,12 +30,7 @@ export default async function LoginPage({
         <div className="auth-locale">
           <LocaleSwitcher />
         </div>
-        {resetLinkInvalid ? (
-          <p className="auth-notice" role="alert">
-            {t('loginPage.resetLinkInvalid')}
-          </p>
-        ) : null}
-        <LoginForm />
+        <ForgotPasswordForm />
       </section>
     </main>
   )

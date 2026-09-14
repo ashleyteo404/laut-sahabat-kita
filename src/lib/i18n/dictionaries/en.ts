@@ -92,6 +92,27 @@ export const enUiSource = {
   'login.submit': 'Sign in →',
   'login.submitPending': 'Signing in…',
   'login.footnote': 'Teachers and students use the same secure sign-in.',
+  'login.forgotLink': 'Teacher? Forgot your password',
+
+  // ── Password reset (staff) ──
+  'forgot.eyebrow': 'Teachers and administrators',
+  'forgot.heading': 'Reset your password',
+  'forgot.intro':
+    'Enter the email address you sign in with. If it matches an account, we will send a link to choose a new password.',
+  'forgot.emailLabel': 'Email address',
+  'forgot.emailPlaceholder': 'name@school.org',
+  'forgot.submit': 'Send reset link',
+  'forgot.submitPending': 'Sending…',
+  'forgot.studentNote':
+    'Students sign in with a username and PIN. If you forgot your PIN, ask your teacher to reset it.',
+  'forgot.backToLogin': '← Back to sign in',
+  'reset.eyebrow': 'Account security',
+  'reset.heading': 'Choose a new password',
+  'reset.intro': 'Use at least 8 characters. Saving signs your account out on other devices.',
+  'reset.passwordLabel': 'New password',
+  'reset.confirmLabel': 'Confirm new password',
+  'reset.submit': 'Save password',
+  'reset.submitPending': 'Saving…',
 
   // ── Activity card ──
   'activity.mode.field': 'Field activity',
@@ -240,6 +261,22 @@ export const enUiSource = {
   'action.login.tooManyAttempts': 'Too many sign-in attempts. Wait a moment and try again.',
   'action.login.failed': 'Sign-in could not be completed. Try again in a moment.',
 
+  // ── Password reset results ──
+  'action.forgot.sent':
+    'If that email belongs to a teacher or administrator account, a reset link is on its way. Check your inbox and spam folder.',
+  'action.forgot.invalidEmail': 'Enter a valid email address.',
+  'action.forgot.studentAccount':
+    'Students cannot reset a PIN by email. Ask your teacher to reset it.',
+  'action.forgot.tooManyRequests': 'Too many reset requests. Wait a few minutes and try again.',
+  'action.forgot.failed':
+    'The reset email could not be sent. Try again later or ask your JARI administrator.',
+  'action.reset.tooShort': 'Use at least 8 characters.',
+  'action.reset.tooLong': 'Use 72 characters or fewer.',
+  'action.reset.mismatch': 'The two passwords do not match.',
+  'action.reset.samePassword': 'Choose a password different from your current one.',
+  'action.reset.weak': 'That password is too easy to guess. Choose a stronger one.',
+  'action.reset.failed': 'The password could not be saved. Request a new reset link and try again.',
+
   // ── Review results ──
   'action.review.noteRequired': 'Add a short note explaining what the student should improve.',
   'action.review.invalid': 'Check the review details and try again.',
@@ -321,6 +358,8 @@ export const enServerSource = {
   'meta.title.template': '%s · Laut Sahabat Kita',
   'meta.description': 'A field and online learning companion for Laut Sahabat Kita.',
   'meta.login.title': 'Sign in',
+  'meta.forgot.title': 'Reset password',
+  'meta.reset.title': 'New password',
   'meta.dashboard.title': 'Dashboard',
   'meta.explore.title': 'Explore',
   'meta.passport.title': 'My Passport',
@@ -338,6 +377,7 @@ export const enServerSource = {
   'loginPage.intro':
     'Learn online, explore outdoors, document what you notice, and grow your Digital Ocean Passport over time.',
   'loginPage.islands': 'Gili Bidara · Gili Range · Gili Sarang',
+  'loginPage.resetLinkInvalid': 'That reset link is invalid or has expired. Request a new one.',
 
   // ── Student dashboard ──
   'dashboard.student.kicker': 'Your ocean journey continues',

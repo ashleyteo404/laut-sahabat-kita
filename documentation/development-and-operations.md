@@ -132,6 +132,23 @@ endpoint using [UptimeRobot monitoring](uptimerobot-monitoring.md).
 - A JARI administrator can view programme reporting.
 - Sign-out clears the session and returns to login.
 
+### Staff password reset
+
+Use a staff account whose email address you can actually receive. Supabase's built-in email sender is
+heavily rate-limited and may only deliver to your Supabase organization's members; configure custom
+SMTP before relying on it for real teachers.
+
+- From **Teacher? Forgot your password**, request a reset. The confirmation reads the same for a real
+  and a non-existent address.
+- Entering a username, or a student placeholder address, explains that a teacher resets student PINs.
+- The emailed link opens **Choose a new password**. Mismatched, too-short and unchanged passwords are
+  refused with a translated message; a valid one continues to the dashboard.
+- The old password no longer works; the new one does. Another browser signed in to the same account is
+  signed out.
+- A reused, expired or edited link lands on sign-in with the "invalid or has expired" notice.
+- Signed out, `/reset-password` redirects to sign-in; signed in as a student it redirects to the
+  dashboard.
+
 ### Student accounts
 
 - A teacher adds two students by hand (one with username and PIN left blank, one with both typed);
@@ -217,3 +234,6 @@ stored upload error re-render in the new language.
 | Add students says "not set up"  | Set `SUPABASE_SECRET_KEY` on the server and restart or redeploy.                                                    |
 | Student username sign-in fails  | Check the username on the Students page, then reset the PIN. Usernames are lowercase; spaces are not allowed.       |
 | `student usernames` check fails | Apply `20260914_student_usernames.sql`.                                                                             |
+| Reset email never arrives       | Check spam, Supabase **Authentication → Logs**, the email rate limit, and whether custom SMTP is configured.        |
+| Reset link says invalid/expired | Links are single-use and time-limited. Request a new one; with the default template, open it in the same browser.   |
+| Reset link goes to wrong site   | Set **Site URL** and add the app URL to **Redirect URLs** in Authentication → URL Configuration.                    |

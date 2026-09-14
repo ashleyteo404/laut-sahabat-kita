@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useActionState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { loginAction } from '@/app/actions/auth'
@@ -55,6 +56,9 @@ export function LoginForm() {
           minLength={6}
           placeholder={t('login.passwordPlaceholder')}
         />
+        <Link className="text-btn auth-forgot" href="/forgot-password">
+          {t('login.forgotLink')}
+        </Link>
       </div>
       <SubmitButton />
       <small>{t('login.footnote')}</small>
