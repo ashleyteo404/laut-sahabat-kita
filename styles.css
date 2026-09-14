@@ -1967,3 +1967,136 @@ select:focus-visible {
     font-size: 22px;
   }
 }
+
+/* ── Student accounts ── */
+.table-scroll {
+  overflow-x: auto;
+}
+.row-editor td {
+  padding: 6px;
+  vertical-align: middle;
+}
+.row-editor input {
+  width: 100%;
+  min-width: 140px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: var(--paper);
+  color: var(--deep);
+  font: inherit;
+  font-size: 12px;
+}
+.row-editor input.narrow {
+  min-width: 70px;
+}
+.row-editor input[aria-invalid='true'] {
+  border-color: #a04c3c;
+}
+.row-editor .row-number {
+  width: 28px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.row-editor .row-problem td {
+  padding-top: 0;
+  border-top: 0;
+}
+.row-remove {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+.row-remove:disabled {
+  opacity: 0.3;
+}
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 16px;
+}
+.school-field {
+  max-width: 420px;
+}
+.csv-problems {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+.csv-format {
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: #f7faf8;
+  font-size: 12px;
+}
+.csv-format p {
+  margin: 10px 0 6px;
+}
+.csv-format pre {
+  overflow-x: auto;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  font-size: 11px;
+}
+.credential {
+  font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.results-warning {
+  margin: 12px 0 4px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fdf3e3;
+  color: #7a4d12;
+  font-size: 12px;
+  font-weight: 700;
+}
+.reset-pin {
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+}
+.pin-reveal {
+  display: grid;
+  gap: 2px;
+  color: var(--teal);
+  font-size: 12px;
+}
+.pin-reveal small {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+@media print {
+  .sidebar,
+  .topbar,
+  .mobile-nav,
+  .offline-banner,
+  .no-print {
+    display: none !important;
+  }
+  .app-shell {
+    display: block;
+  }
+  .main {
+    padding: 0;
+  }
+  .panel {
+    border: 1px solid #999;
+  }
+  .results-warning {
+    background: none;
+    color: #000;
+  }
+}

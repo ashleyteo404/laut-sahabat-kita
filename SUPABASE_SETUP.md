@@ -44,19 +44,21 @@ You can safely run the script again when updating pilot content. Do not manually
 4. When the app is deployed, add the production HTTPS URL as another redirect URL and make it the Site URL.
 5. Open **Authentication → Providers → Email** and leave email/password authentication enabled.
 
-For a controlled pilot, accounts can be created by a JARI administrator. Public self-registration is intentionally not included in the app.
+6. Open **Authentication → Sign In / Providers** and turn **off** **Allow new users to sign up**.
 
-## 4. Create the first student and teacher
+Public self-registration is intentionally not part of this app. Leaving sign-up enabled lets anyone with the project URL and publishable key create an account directly through the Supabase API, without the app. `npm run db:check` warns while it is enabled.
+
+## 4. Create the first teacher
+
+Teacher and JARI administrator accounts are created by an administrator in Supabase. Student accounts are created by teachers inside the app (step 5 onwards).
 
 1. Open **Authentication → Users**.
 2. Select **Add user → Create new user**.
 3. Create `teacher@example.org` with a temporary password and enable automatic confirmation.
-4. Repeat for `student@example.org`.
-5. Return to **SQL Editor** and open a new query.
-6. Copy [`supabase/assign-users.example.sql`](supabase/assign-users.example.sql).
-7. Replace the two example emails and profile names if needed.
-8. Run the query.
-9. Check that its final result shows one teacher and one student assigned to SDN Labuhan Pandan.
+4. Return to **SQL Editor** and open a new query.
+5. Copy [`supabase/assign-users.example.sql`](supabase/assign-users.example.sql).
+6. Replace the example emails and profile names, and remove the student example if you are creating students in the app.
+7. Run the query and check the teacher is assigned to SDN Labuhan Pandan.
 
 New users always start as students. Only a trusted administrator using the SQL Editor should promote an account to `teacher` or `jari_admin`. The assignment example includes an optional JARI coordinator account.
 
@@ -74,6 +76,14 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLISHABLE_KEY
 ```
 
 The publishable key may be present in browser code because row-level security protects the data. Never place a `service_role`, secret, or database password in this repository. The original `supabase-config.js` is supported only as a temporary migration fallback.
+
+To let teachers create student accounts, also add the **Secret key** from the same API settings page:
+
+```env
+SUPABASE_SECRET_KEY=YOUR_SECRET_KEY
+```
+
+This key bypasses row-level security. Put it only in `.env.local` and in your hosting platform's server environment variables (in Vercel, as a normal variable — **not** prefixed `NEXT_PUBLIC_`). Never commit it or share it in messages. Without it the app still works; the **Add students** page just explains that account creation is not set up.
 
 ## 6. Run the app locally
 
@@ -108,16 +118,17 @@ upload in the background; iPhone and iPad retry when the PWA is reopened or resu
 
 ## 8. Test the complete workflow
 
-1. Sign in as the student.
-2. Complete an online activity. It should immediately appear as complete with its learning badge.
-3. Start a field activity, add a JPG, PNG, or WebP image under 3 MB, write at least ten characters, and submit it.
-4. Confirm the activity says it is waiting for teacher approval.
-5. Sign out and sign in as the teacher.
-6. Open **Review**, inspect the private photo and reflection, then approve the submission.
-7. Sign back in as the student and confirm the badge is earned.
-8. Repeat once using **Return for changes** and verify the student sees the returned status.
-9. As the teacher, open **Sessions**, record attendance and a reflection, then confirm the session appears in the recent-session list.
-10. As a `jari_admin`, open **Programme** and confirm school reach, learning hours, badge pathways, and participation are aggregated.
+1. Sign in as the teacher, open **Students → Add students**, and create a student. Leave username and PIN blank to have them generated. Write down the username and PIN shown — they appear only once.
+2. Sign out and sign in as that student using the username and PIN.
+3. Complete an online activity. It should immediately appear as complete with its learning badge.
+4. Start a field activity, add a JPG, PNG, or WebP image under 3 MB, write at least ten characters, and submit it.
+5. Confirm the activity says it is waiting for teacher approval.
+6. Sign out and sign in as the teacher.
+7. Open **Review**, inspect the private photo and reflection, then approve the submission.
+8. Sign back in as the student and confirm the badge is earned.
+9. Repeat once using **Return for changes** and verify the student sees the returned status.
+10. As the teacher, open **Sessions**, record attendance and a reflection, then confirm the session appears in the recent-session list.
+11. As a `jari_admin`, open **Programme** and confirm school reach, learning hours, badge pathways, and participation are aggregated.
 
 ## 9. Add more schools and users
 
@@ -136,6 +147,9 @@ returning id;
 - **Missing Supabase configuration:** confirm both variables exist in `.env.local`, then restart `npm run dev`.
 - **Invalid login credentials:** confirm the user exists and is confirmed under Authentication → Users.
 - **Profile not found:** the user was created before the schema trigger. Run the assignment query; insert a matching profile first if necessary.
+- **Add students says account creation is not set up:** add `SUPABASE_SECRET_KEY` to the server environment and restart or redeploy.
+- **A student forgot their PIN:** a teacher opens **Students** and selects **Reset PIN** on that student. The new PIN is shown once.
+- **Creating students fails with a database error:** run `supabase/migrations/20260914_student_usernames.sql`.
 - **Teacher sees no students:** verify both teacher and students have the same `school_id`.
 - **Photo upload is denied:** confirm the `evidence` bucket and its policies were created by `schema.sql`, the user is signed in, and the image is an allowed type under 3 MB.
 - **Saved submissions do not sync:** run `20260822_offline_submission_sync.sql`, sign in as the same student who saved the work, and use the **waiting** button in the header to retry.

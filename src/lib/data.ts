@@ -132,7 +132,7 @@ export async function getWorkspaceData(): Promise<WorkspaceData> {
       supabase
         .from('profiles')
         .select(
-          'id, full_name, role, school_id, village, grade, joined_year, schools(id, name, village)',
+          'id, full_name, role, school_id, village, grade, username, joined_year, schools(id, name, village)',
         )
         .order('full_name'),
       supabase

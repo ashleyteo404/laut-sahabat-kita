@@ -83,11 +83,12 @@ export const enUiSource = {
   // ── Sign in ──
   'login.eyebrow': 'Welcome back',
   'login.heading': 'Sign in to your passport',
-  'login.intro': 'Use the account provided by your teacher or JARI coordinator.',
-  'login.emailLabel': 'Email address',
-  'login.emailPlaceholder': 'name@school.org',
-  'login.passwordLabel': 'Password',
-  'login.passwordPlaceholder': 'Your password',
+  'login.intro':
+    'Students use the username and PIN from their teacher. Teachers use their email address.',
+  'login.identifierLabel': 'Email or username',
+  'login.identifierPlaceholder': 'name@school.org or siti482',
+  'login.passwordLabel': 'Password or PIN',
+  'login.passwordPlaceholder': 'Your password or 6-digit PIN',
   'login.submit': 'Sign in →',
   'login.submitPending': 'Signing in…',
   'login.footnote': 'Teachers and students use the same secure sign-in.',
@@ -164,11 +165,77 @@ export const enUiSource = {
   'session.save': 'Save session',
   'session.savePending': 'Saving session…',
 
+  // ── Student accounts ──
+  'accounts.schoolLabel': 'School',
+  'accounts.schoolPlaceholder': 'Choose a school',
+  'accounts.schoolFixed': 'Students will be added to {school}.',
+  'accounts.manualHeading': 'Enter students',
+  'accounts.manualIntro':
+    'Only the full name is required. Leave username and PIN blank and they will be created for you.',
+  'accounts.col.row': '#',
+  'accounts.col.fullName': 'Full name',
+  'accounts.col.grade': 'Grade',
+  'accounts.col.username': 'Username',
+  'accounts.col.pin': 'PIN',
+  'accounts.autoPlaceholder': 'auto',
+  'accounts.removeRow': 'Remove row {row}',
+  'accounts.addRow': '+ Add row',
+  'accounts.rowLimit': 'Up to {max} students at a time.',
+  'accounts.rowProblem': 'Row {row}: {problem}',
+  'accounts.submit': 'Create accounts',
+  'accounts.submitPending': 'Creating accounts…',
+  'accounts.csvHeading': 'Upload a CSV file',
+  'accounts.csvIntro':
+    'Upload a class list to fill the table. You can check and edit every row before creating accounts.',
+  'accounts.csvChoose': 'Tap to choose a CSV file',
+  'accounts.csvLoaded': '{count} rows loaded from {file}. Check them in the table above.',
+  'accounts.csvFormatHeading': 'Required file format',
+  'accounts.csvFormatHeader':
+    'The first row must contain the column names below. Column order does not matter.',
+  'accounts.csvFormatColumn': 'Column',
+  'accounts.csvFormatRequired': 'Required',
+  'accounts.csvFormatMeaning': 'What to enter',
+  'accounts.csvFormatYes': 'Yes',
+  'accounts.csvFormatNo': 'No',
+  'accounts.csvFormatFullName': 'Student’s full name',
+  'accounts.csvFormatGrade': 'Class or grade, for example 5',
+  'accounts.csvFormatUsername':
+    '3–32 characters: lowercase letters, numbers, dot, dash or underscore. Leave blank to generate.',
+  'accounts.csvFormatPin':
+    '6 digits, not all the same and not in order (not 123456). Leave blank to generate.',
+  'accounts.csvFormatNotes':
+    'Save as CSV (UTF-8). Commas or semicolons both work. Maximum {max} students per file.',
+  'accounts.csvFormatExample': 'Example',
+  'accounts.csvTemplate': 'Download template',
+  'accounts.csv.empty': 'The file is empty.',
+  'accounts.csv.missingColumn': 'The first row must include a full_name column.',
+  'accounts.csv.missingName': 'Line {line}: full_name is empty.',
+  'accounts.csv.tooManyRows': 'The file has more than {max} students. Split it into smaller files.',
+  'accounts.csv.unclosedQuote': 'Line {line}: a quotation mark is not closed.',
+  'accounts.csv.unreadable': 'The file could not be read.',
+  'accounts.results.heading': 'Accounts created',
+  'accounts.results.warning':
+    'Print or write down these PINs now. They are shown only once and cannot be viewed again. A lost PIN can be reset from the Students page.',
+  'accounts.results.signInHint': 'Students sign in to the app with their username and PIN.',
+  'accounts.results.print': 'Print',
+  'accounts.results.download': 'Download sign-in details (CSV)',
+  'accounts.results.addMore': 'Add more students',
+  'accounts.results.failedHeading': 'Not created',
+  'accounts.results.problem': 'Problem',
+  'accounts.reset.button': 'Reset PIN',
+  'accounts.reset.pending': 'Resetting…',
+  'accounts.reset.confirm': 'Create a new PIN for {name}? Their current PIN will stop working.',
+  'accounts.reset.newPin': 'New PIN',
+  'accounts.reset.shownOnce': 'Shown once. Write it down now.',
+  'accounts.emailSignIn': 'Email sign-in',
+
   // ── Sign-in results ──
+  'action.login.invalidIdentifier': 'Enter your email address or username.',
+  'action.login.invalidUsername': 'That username is not valid. Check it with your teacher.',
   'action.login.invalidEmail': 'Enter a valid email address.',
   'action.login.passwordTooShort': 'Password must be at least 6 characters.',
   'action.login.invalidCredentials':
-    'That email and password do not match. Check them and try again.',
+    'Those sign-in details do not match. Check them and try again.',
   'action.login.emailNotConfirmed': 'Confirm your email address before signing in.',
   'action.login.tooManyAttempts': 'Too many sign-in attempts. Wait a moment and try again.',
   'action.login.failed': 'Sign-in could not be completed. Try again in a moment.',
@@ -216,6 +283,35 @@ export const enUiSource = {
   'action.sync.waitingForConnection': 'Waiting for an internet connection.',
   'action.sync.uploadFailed': 'Upload failed ({status}).',
   'action.sync.storageUnavailable': 'Could not open device storage.',
+
+  // ── Student account results ──
+  'action.accounts.notConfigured':
+    'Account creation is not set up on this server yet. Ask your JARI administrator.',
+  'action.accounts.notAllowed':
+    'Only teachers and JARI administrators can manage student accounts.',
+  'action.accounts.noSchool':
+    'Your account is not linked to a school yet. Ask your JARI administrator.',
+  'action.accounts.invalidSchool': 'Choose a school.',
+  'action.accounts.invalidRows':
+    'The student list could not be read. Refresh the page and try again.',
+  'action.accounts.noRows': 'Add at least one student.',
+  'action.accounts.tooManyRows': 'You can add up to {max} students at a time.',
+  'action.accounts.fixRows': 'No accounts were created. Fix the rows marked below and try again.',
+  'action.accounts.nameRequired': 'Full name is required.',
+  'action.accounts.nameTooLong': 'Full name must be 80 characters or fewer.',
+  'action.accounts.gradeTooLong': 'Grade must be 10 characters or fewer.',
+  'action.accounts.usernameInvalid':
+    'Username must be 3–32 characters: lowercase letters, numbers, dots, dashes or underscores.',
+  'action.accounts.usernameDuplicate': 'This username is used more than once in the list.',
+  'action.accounts.usernameTaken': 'This username is already taken.',
+  'action.accounts.pinInvalid': 'PIN must be 6 digits, not all the same and not in order.',
+  'action.accounts.createFailed': 'The account could not be created. Try again.',
+  'action.accounts.created': 'Accounts created: {count}.',
+  'action.accounts.partial': 'Accounts created: {created}. Not created: {failed}.',
+  'action.accounts.noneCreated': 'No accounts were created. See the problems below.',
+  'action.accounts.resetDone': 'New PIN created.',
+  'action.accounts.resetNotAllowed': 'You can only reset PINs for students in your school.',
+  'action.accounts.resetFailed': 'The PIN could not be reset. Try again.',
 } as const
 
 export const enServerSource = {
@@ -232,6 +328,7 @@ export const enServerSource = {
   'meta.journal.title': 'Journal',
   'meta.review.title': 'Review submissions',
   'meta.students.title': 'Students',
+  'meta.studentsAdd.title': 'Add students',
   'meta.sessions.title': 'Learning sessions',
   'meta.programme.title': 'Programme impact',
 
@@ -355,8 +452,25 @@ export const enServerSource = {
   'students.col.class': 'Class',
   'students.col.activities': 'Activities',
   'students.col.badges': 'Badges',
+  'students.col.username': 'Username',
+  'students.col.signIn': 'Sign-in',
+  'students.addButton': 'Add students',
   'students.emptyTitle': 'No students assigned',
-  'students.emptyBody': 'Assign student profiles to this teacher’s school in Supabase.',
+  'students.emptyBody': 'Use Add students to create accounts for your class.',
+
+  // ── Add students ──
+  'studentsAdd.eyebrow': 'Student accounts',
+  'studentsAdd.heading': 'Add students',
+  'studentsAdd.intro':
+    'Create sign-in details for your students. Each student gets a username and a 6-digit PIN.',
+  'studentsAdd.back': '← Back to students',
+  'studentsAdd.notConfiguredTitle': 'Account creation is not set up',
+  'studentsAdd.notConfiguredBody':
+    'An administrator needs to add the SUPABASE_SECRET_KEY server setting before accounts can be created here.',
+  'studentsAdd.noSchoolTitle': 'Your account has no school',
+  'studentsAdd.noSchoolBody': 'Ask your JARI administrator to link your account to a school first.',
+  'studentsAdd.noSchoolsTitle': 'No schools yet',
+  'studentsAdd.noSchoolsBody': 'Add a school in Supabase before creating student accounts.',
 
   // ── Learning sessions ──
   'sessions.eyebrow': 'Teacher learning record',

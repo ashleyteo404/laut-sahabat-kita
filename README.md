@@ -16,6 +16,7 @@ and the latest code audit are indexed in [documentation/README.md](documentation
 - Interface available in English and Bahasa Indonesia, detected on first visit and switchable anywhere
 - Separate online learning and teacher-verified explorer achievements
 - Teacher session, attendance, field observation, and reflection records
+- Teacher-managed student accounts: add a class by hand or CSV; students sign in with a username and PIN
 - JARI programme reporting for schools, villages, learning hours, and reach
 - Installable PWA with a durable IndexedDB outbox for offline reflections and photo evidence
 

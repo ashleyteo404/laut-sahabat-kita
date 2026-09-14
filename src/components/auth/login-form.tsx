@@ -32,14 +32,16 @@ export function LoginForm() {
         {state.status === 'error' ? actionMessage(state.messageKey, state.messageValues) : ''}
       </div>
       <div className="field">
-        <label htmlFor="email">{t('login.emailLabel')}</label>
+        <label htmlFor="identifier">{t('login.identifierLabel')}</label>
         <input
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
+          id="identifier"
+          name="identifier"
+          type="text"
+          autoComplete="username"
+          autoCapitalize="none"
+          spellCheck={false}
           required
-          placeholder={t('login.emailPlaceholder')}
+          placeholder={t('login.identifierPlaceholder')}
         />
       </div>
       <div className="field">

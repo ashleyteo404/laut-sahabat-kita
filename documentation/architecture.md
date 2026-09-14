@@ -44,6 +44,7 @@ signed-in user's session and publishable key, so RLS remains the final authoriza
 | Local persistence             | `src/lib/offline/submission-queue.ts`                                 | IndexedDB outbox, retry state, idempotent client IDs, and foreground sync.                        |
 | PWA worker                    | `public/sw.js`                                                        | Static asset caches, offline fallback, Background Sync, and window notifications.                 |
 | Localization                  | `src/lib/i18n/`                                                       | Negotiate and persist the reader's language, and resolve typed message dictionaries.              |
+| Account provisioning          | `src/lib/accounts/`, `src/lib/supabase/admin.ts`                      | Validate class lists, create student logins with the server-only secret key, and reset PINs.      |
 | Session boundary              | `src/proxy.ts`, `src/lib/supabase/proxy.ts`                           | Negotiate the locale, refresh Supabase cookies, and redirect unauthenticated page requests.       |
 | Data and policy               | `supabase/schema.sql`                                                 | Tables, seed content, triggers, RPCs, RLS, Storage policies, and database invariants.             |
 
@@ -61,6 +62,8 @@ database RPCs or triggers.
 | Review field submissions                          |   No    |   Own school    |          All schools           |
 | Record learning sessions                          |   No    | Assigned school | Only when assigned to a school |
 | View programme reporting                          |   No    |       No        |              Yes               |
+| Create student accounts and reset PINs            |   No    |   Own school    |          All schools           |
+| Create teacher accounts                           |   No    |       No        |   Supabase dashboard and SQL   |
 
 The protected layout requires a profile for every authenticated route. Individual pages call
 `requireProfile([...roles])` for narrower access. Database policies repeat these boundaries so a
@@ -80,6 +83,27 @@ user cannot bypass the UI by calling Supabase directly.
 4. The protected layout resolves the profile and renders the role-specific application shell.
 5. `getWorkspaceData()` performs concurrent RLS-scoped queries and supplies a typed view model to
    the route.
+
+Staff sign in with an email address. Students sign in with a username and 6-digit PIN:
+`src/app/actions/auth.ts` treats an identifier without `@` as a username and maps it to a
+placeholder login address under the reserved `.invalid` domain, so no lookup happens before sign-in.
+
+### Student account provisioning
+
+1. A teacher or JARI administrator opens `/students/add` and enters rows by hand or loads a CSV,
+   which is parsed in the browser (`src/lib/accounts/csv.ts`) so every row can be reviewed first.
+2. `createStudentsAction` re-authorizes with `requireProfile(['teacher', 'jari_admin'])`. Page
+   gating alone is not a boundary, because a Server Action is a public POST endpoint.
+3. `src/lib/accounts/server.ts` decides everything trust-sensitive from the actor's own profile: the
+   role is always `student`, and a teacher's students always go to the teacher's school regardless of
+   what the request contains. Only a JARI administrator may choose a school.
+4. Validation runs over the whole batch first — names, username format, PIN rules, duplicates, and
+   usernames already taken. If any row fails, no account is created.
+5. Each row then calls the Supabase admin API through `src/lib/supabase/admin.ts` (the only reader of
+   `SUPABASE_SECRET_KEY`) and sets the profile. A failed profile write deletes the new login, so no
+   orphan remains. Rows succeed or fail independently and the result reports exactly which.
+6. PINs are generated server-side, returned once for printing or download, and never stored in plain
+   text or logged. A forgotten PIN is replaced from the Students page.
 
 ### Student activity submission
 
