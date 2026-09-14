@@ -79,11 +79,12 @@ export const idUi: UiDictionary = {
   // ── Masuk ──
   'login.eyebrow': 'Selamat datang kembali',
   'login.heading': 'Masuk ke paspormu',
-  'login.intro': 'Gunakan akun yang diberikan gurumu atau koordinator JARI.',
-  'login.emailLabel': 'Alamat email',
-  'login.emailPlaceholder': 'nama@sekolah.org',
-  'login.passwordLabel': 'Kata sandi',
-  'login.passwordPlaceholder': 'Kata sandimu',
+  'login.intro':
+    'Siswa masuk dengan nama pengguna dan PIN dari guru. Guru masuk dengan alamat email.',
+  'login.identifierLabel': 'Email atau nama pengguna',
+  'login.identifierPlaceholder': 'nama@sekolah.org atau siti482',
+  'login.passwordLabel': 'Kata sandi atau PIN',
+  'login.passwordPlaceholder': 'Kata sandi atau PIN 6 angka',
   'login.submit': 'Masuk →',
   'login.submitPending': 'Sedang masuk…',
   'login.footnote': 'Guru dan siswa menggunakan cara masuk aman yang sama.',
@@ -162,10 +163,76 @@ export const idUi: UiDictionary = {
   'session.save': 'Simpan sesi',
   'session.savePending': 'Menyimpan sesi…',
 
+  // ── Akun siswa ──
+  'accounts.schoolLabel': 'Sekolah',
+  'accounts.schoolPlaceholder': 'Pilih sekolah',
+  'accounts.schoolFixed': 'Siswa akan ditambahkan ke {school}.',
+  'accounts.manualHeading': 'Masukkan data siswa',
+  'accounts.manualIntro':
+    'Hanya nama lengkap yang wajib. Kosongkan nama pengguna dan PIN agar dibuat otomatis.',
+  'accounts.col.row': '#',
+  'accounts.col.fullName': 'Nama lengkap',
+  'accounts.col.grade': 'Kelas',
+  'accounts.col.username': 'Nama pengguna',
+  'accounts.col.pin': 'PIN',
+  'accounts.autoPlaceholder': 'otomatis',
+  'accounts.removeRow': 'Hapus baris {row}',
+  'accounts.addRow': '+ Tambah baris',
+  'accounts.rowLimit': 'Maksimal {max} siswa sekaligus.',
+  'accounts.rowProblem': 'Baris {row}: {problem}',
+  'accounts.submit': 'Buat akun',
+  'accounts.submitPending': 'Membuat akun…',
+  'accounts.csvHeading': 'Unggah berkas CSV',
+  'accounts.csvIntro':
+    'Unggah daftar kelas untuk mengisi tabel. Kamu bisa memeriksa dan mengubah setiap baris sebelum membuat akun.',
+  'accounts.csvChoose': 'Ketuk untuk memilih berkas CSV',
+  'accounts.csvLoaded': '{count} baris dimuat dari {file}. Periksa di tabel di atas.',
+  'accounts.csvFormatHeading': 'Format berkas yang diperlukan',
+  'accounts.csvFormatHeader':
+    'Baris pertama harus berisi nama kolom di bawah ini. Urutan kolom bebas.',
+  'accounts.csvFormatColumn': 'Kolom',
+  'accounts.csvFormatRequired': 'Wajib',
+  'accounts.csvFormatMeaning': 'Isi dengan',
+  'accounts.csvFormatYes': 'Ya',
+  'accounts.csvFormatNo': 'Tidak',
+  'accounts.csvFormatFullName': 'Nama lengkap siswa',
+  'accounts.csvFormatGrade': 'Kelas, misalnya 5',
+  'accounts.csvFormatUsername':
+    '3–32 karakter: huruf kecil, angka, titik, tanda hubung, atau garis bawah. Kosongkan agar dibuat otomatis.',
+  'accounts.csvFormatPin':
+    '6 angka, tidak semuanya sama dan tidak berurutan (bukan 123456). Kosongkan agar dibuat otomatis.',
+  'accounts.csvFormatNotes':
+    'Simpan sebagai CSV (UTF-8). Pemisah koma atau titik koma sama-sama bisa. Maksimal {max} siswa per berkas.',
+  'accounts.csvFormatExample': 'Contoh',
+  'accounts.csvTemplate': 'Unduh templat',
+  'accounts.csv.empty': 'Berkas kosong.',
+  'accounts.csv.missingColumn': 'Baris pertama harus memuat kolom full_name.',
+  'accounts.csv.missingName': 'Baris {line}: full_name kosong.',
+  'accounts.csv.tooManyRows': 'Berkas berisi lebih dari {max} siswa. Bagi menjadi beberapa berkas.',
+  'accounts.csv.unclosedQuote': 'Baris {line}: tanda kutip tidak ditutup.',
+  'accounts.csv.unreadable': 'Berkas tidak dapat dibaca.',
+  'accounts.results.heading': 'Akun dibuat',
+  'accounts.results.warning':
+    'Cetak atau catat PIN ini sekarang. PIN hanya ditampilkan sekali dan tidak bisa dilihat lagi. PIN yang hilang bisa diatur ulang dari halaman Siswa.',
+  'accounts.results.signInHint': 'Siswa masuk ke aplikasi dengan nama pengguna dan PIN.',
+  'accounts.results.print': 'Cetak',
+  'accounts.results.download': 'Unduh data masuk (CSV)',
+  'accounts.results.addMore': 'Tambah siswa lagi',
+  'accounts.results.failedHeading': 'Tidak dibuat',
+  'accounts.results.problem': 'Masalah',
+  'accounts.reset.button': 'Atur ulang PIN',
+  'accounts.reset.pending': 'Mengatur ulang…',
+  'accounts.reset.confirm': 'Buat PIN baru untuk {name}? PIN lama tidak akan berlaku lagi.',
+  'accounts.reset.newPin': 'PIN baru',
+  'accounts.reset.shownOnce': 'Hanya ditampilkan sekali. Catat sekarang.',
+  'accounts.emailSignIn': 'Masuk dengan email',
+
   // ── Hasil proses masuk ──
+  'action.login.invalidIdentifier': 'Masukkan alamat email atau nama penggunamu.',
+  'action.login.invalidUsername': 'Nama pengguna tidak valid. Tanyakan kepada gurumu.',
   'action.login.invalidEmail': 'Masukkan alamat email yang valid.',
   'action.login.passwordTooShort': 'Kata sandi minimal 6 karakter.',
-  'action.login.invalidCredentials': 'Email dan kata sandi tidak cocok. Periksa lalu coba lagi.',
+  'action.login.invalidCredentials': 'Data masuk tidak cocok. Periksa lalu coba lagi.',
   'action.login.emailNotConfirmed': 'Konfirmasi alamat emailmu sebelum masuk.',
   'action.login.tooManyAttempts': 'Terlalu banyak percobaan masuk. Tunggu sebentar lalu coba lagi.',
   'action.login.failed': 'Proses masuk tidak dapat diselesaikan. Coba lagi sebentar lagi.',
@@ -213,6 +280,35 @@ export const idUi: UiDictionary = {
   'action.sync.waitingForConnection': 'Menunggu koneksi internet.',
   'action.sync.uploadFailed': 'Unggahan gagal ({status}).',
   'action.sync.storageUnavailable': 'Tidak dapat membuka penyimpanan perangkat.',
+
+  // ── Hasil akun siswa ──
+  'action.accounts.notConfigured':
+    'Pembuatan akun belum disiapkan di server ini. Hubungi administrator JARI.',
+  'action.accounts.notAllowed':
+    'Hanya guru dan administrator JARI yang dapat mengelola akun siswa.',
+  'action.accounts.noSchool': 'Akunmu belum terhubung ke sekolah. Hubungi administrator JARI.',
+  'action.accounts.invalidSchool': 'Pilih sekolah.',
+  'action.accounts.invalidRows':
+    'Daftar siswa tidak dapat dibaca. Muat ulang halaman lalu coba lagi.',
+  'action.accounts.noRows': 'Tambahkan setidaknya satu siswa.',
+  'action.accounts.tooManyRows': 'Kamu bisa menambahkan maksimal {max} siswa sekaligus.',
+  'action.accounts.fixRows':
+    'Belum ada akun yang dibuat. Perbaiki baris yang ditandai di bawah lalu coba lagi.',
+  'action.accounts.nameRequired': 'Nama lengkap wajib diisi.',
+  'action.accounts.nameTooLong': 'Nama lengkap maksimal 80 karakter.',
+  'action.accounts.gradeTooLong': 'Kelas maksimal 10 karakter.',
+  'action.accounts.usernameInvalid':
+    'Nama pengguna harus 3–32 karakter: huruf kecil, angka, titik, tanda hubung, atau garis bawah.',
+  'action.accounts.usernameDuplicate': 'Nama pengguna ini dipakai lebih dari sekali dalam daftar.',
+  'action.accounts.usernameTaken': 'Nama pengguna ini sudah dipakai.',
+  'action.accounts.pinInvalid': 'PIN harus 6 angka, tidak semuanya sama dan tidak berurutan.',
+  'action.accounts.createFailed': 'Akun tidak dapat dibuat. Coba lagi.',
+  'action.accounts.created': 'Akun dibuat: {count}.',
+  'action.accounts.partial': 'Akun dibuat: {created}. Tidak dibuat: {failed}.',
+  'action.accounts.noneCreated': 'Tidak ada akun yang dibuat. Lihat masalah di bawah.',
+  'action.accounts.resetDone': 'PIN baru dibuat.',
+  'action.accounts.resetNotAllowed': 'Kamu hanya bisa mengatur ulang PIN siswa di sekolahmu.',
+  'action.accounts.resetFailed': 'PIN tidak dapat diatur ulang. Coba lagi.',
 }
 
 const idServer: ServerDictionary = {
@@ -229,6 +325,7 @@ const idServer: ServerDictionary = {
   'meta.journal.title': 'Jurnal',
   'meta.review.title': 'Tinjau kiriman',
   'meta.students.title': 'Siswa',
+  'meta.studentsAdd.title': 'Tambah siswa',
   'meta.sessions.title': 'Sesi pembelajaran',
   'meta.programme.title': 'Dampak program',
 
@@ -352,8 +449,26 @@ const idServer: ServerDictionary = {
   'students.col.class': 'Kelas',
   'students.col.activities': 'Kegiatan',
   'students.col.badges': 'Lencana',
+  'students.col.username': 'Nama pengguna',
+  'students.col.signIn': 'Masuk',
+  'students.addButton': 'Tambah siswa',
   'students.emptyTitle': 'Belum ada siswa yang terdaftar',
-  'students.emptyBody': 'Tautkan profil siswa ke sekolah guru ini di Supabase.',
+  'students.emptyBody': 'Gunakan Tambah siswa untuk membuat akun kelasmu.',
+
+  // ── Tambah siswa ──
+  'studentsAdd.eyebrow': 'Akun siswa',
+  'studentsAdd.heading': 'Tambah siswa',
+  'studentsAdd.intro':
+    'Buat data masuk untuk siswamu. Setiap siswa mendapat nama pengguna dan PIN 6 angka.',
+  'studentsAdd.back': '← Kembali ke daftar siswa',
+  'studentsAdd.notConfiguredTitle': 'Pembuatan akun belum disiapkan',
+  'studentsAdd.notConfiguredBody':
+    'Administrator perlu menambahkan pengaturan server SUPABASE_SECRET_KEY sebelum akun dapat dibuat di sini.',
+  'studentsAdd.noSchoolTitle': 'Akunmu belum memiliki sekolah',
+  'studentsAdd.noSchoolBody':
+    'Minta administrator JARI menghubungkan akunmu ke sekolah terlebih dahulu.',
+  'studentsAdd.noSchoolsTitle': 'Belum ada sekolah',
+  'studentsAdd.noSchoolsBody': 'Tambahkan sekolah di Supabase sebelum membuat akun siswa.',
 
   // ── Sesi pembelajaran ──
   'sessions.eyebrow': 'Catatan pembelajaran guru',

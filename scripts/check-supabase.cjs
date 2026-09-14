@@ -36,6 +36,7 @@ async function main() {
     ['submissions', 'submissions', 'id'],
     ['learning/explorer badges', 'student_badges', 'award_tier'],
     ['bilingual content', 'islands', 'name_ind'],
+    ['student usernames', 'profiles', 'username'],
     ['learning sessions', 'learning_sessions', 'id'],
     ['attendance', 'session_attendance', 'session_id'],
   ]
@@ -75,6 +76,18 @@ async function main() {
     const message = error.message ? ` - ${error.message}` : ''
     failures.push(code)
     console.log(`offline submission sync: update required (${code}${message})`)
+  }
+
+  // A warning, not a failure: accounts are created by teachers and administrators, so public
+  // self-registration should be switched off in Authentication settings.
+  const settingsResponse = await fetch(`${url}/auth/v1/settings`, { headers: { apikey: key } })
+  const settings = await settingsResponse.json().catch(() => null)
+  if (settings && settings.disable_signup === false) {
+    console.warn(
+      'public sign-up: WARNING enabled - turn off "Allow new users to sign up" in Supabase Authentication settings',
+    )
+  } else if (settings) {
+    console.log('public sign-up: disabled')
   }
 
   if (failures.length > 0) {

@@ -38,6 +38,7 @@ create table if not exists public.profiles (
   school_id uuid references public.schools(id) on delete set null,
   village text,
   grade text,
+  username text,
   joined_year integer not null default extract(year from now())::integer,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
@@ -256,6 +257,15 @@ create table if not exists public.session_attendance (
 );
 
 create index if not exists profiles_school_id_idx on public.profiles(school_id);
+
+-- Student usernames for teacher-managed accounts. Students sign in with a username and PIN; the
+-- application derives their Supabase Auth email under the reserved `.invalid` domain. Staff keep null.
+alter table public.profiles add column if not exists username text;
+alter table public.profiles drop constraint if exists profiles_username_format;
+alter table public.profiles add constraint profiles_username_format check (
+  username is null or username ~ '^[a-z0-9][a-z0-9._-]{2,31}$'
+);
+create unique index if not exists profiles_username_unique on public.profiles (lower(username));
 create index if not exists submissions_student_id_idx on public.submissions(student_id);
 create index if not exists submissions_status_idx on public.submissions(status);
 create unique index if not exists submissions_student_client_id_idx

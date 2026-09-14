@@ -19,6 +19,8 @@ export interface Profile {
   school_id: string | null
   village: string | null
   grade: string | null
+  /** Set for students with username + PIN sign-in; null for staff and email-based accounts. */
+  username: string | null
   joined_year: number
   schools: School | null
 }
@@ -122,4 +124,31 @@ export interface ActionState {
    */
   messageKey?: ActionMessageKey
   messageValues?: Record<string, string | number>
+}
+
+/** Returned once to the teacher who created the account. The PIN is never stored in plain text. */
+export interface CreatedStudentCredential {
+  row: number
+  fullName: string
+  grade: string | null
+  username: string
+  pin: string
+}
+
+export interface StudentRowProblem {
+  /** 1-based position in the submitted table, so the form can point at the right row. */
+  row: number
+  fullName: string
+  messageKey: ActionMessageKey
+}
+
+export interface CreateStudentsState extends ActionState {
+  created: CreatedStudentCredential[]
+  problems: StudentRowProblem[]
+  /** False when validation rejected the batch before any account was created. */
+  completed: boolean
+}
+
+export interface ResetPinState extends ActionState {
+  pin?: string
 }

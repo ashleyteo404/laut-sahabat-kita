@@ -4,8 +4,11 @@
 
 The application treats Supabase RLS and database functions as the final authorization boundary.
 Route checks improve navigation and user experience, but they are not the only protection. Every
-request uses the signed-in user's JWT and browser-safe publishable key; no `service_role` key is
-present in application code.
+request uses the signed-in user's JWT and browser-safe publishable key, with one deliberate exception:
+creating student logins and resetting their PINs requires the Supabase admin API, which uses the
+server-only `SUPABASE_SECRET_KEY`. That key bypasses RLS, so it is read by exactly one module
+(`src/lib/supabase/admin.ts`, marked `server-only`), is only reached after the caller has been
+authorized, and is never exposed to the browser. See [Credential handling](#credential-handling).
 
 Security decisions follow these rules:
 
@@ -17,20 +20,22 @@ Security decisions follow these rules:
 - Field submissions must reference an existing evidence object owned by that student.
 - The database derives submission state and awards; the browser cannot choose them.
 - Learning-session school ownership is derived from the signed-in staff profile.
+- Student account creation derives role and school from the signed-in staff profile; a teacher can
+  only ever create `student` accounts, and only in their own school.
 
 ## Data model
 
-| Entity               | Purpose                                                                                | Important relationships/invariants                                                                                     |
-| -------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `schools`            | Pilot schools and villages.                                                            | Referenced by profiles and learning sessions.                                                                          |
-| `profiles`           | Application identity linked one-to-one with `auth.users`.                              | Defaults to `student`; trusted SQL administration assigns staff roles and schools.                                     |
-| `islands`            | Gili Bidara, Gili Range, Gili Sarang content containers.                               | Stable text IDs are referenced by activities and sessions.                                                             |
-| `badges`             | Initial learning/explorer achievement definitions.                                     | Activities reference one badge definition.                                                                             |
-| `activities`         | Online and field guidebook activities.                                                 | Published activities belong to an island and badge; steps are JSON arrays.                                             |
-| `submissions`        | Student reflection, optional/private evidence path, review state, and idempotency key. | Reflection minimum is enforced; client UUID is unique per student; only one pending/approved row per student/activity. |
-| `student_badges`     | Award event for a learning or explorer tier.                                           | Unique per student/badge/tier; may reference its source submission and reviewer.                                       |
-| `learning_sessions`  | Teacher-recorded lesson/field delivery.                                                | Belongs to the staff member's school and may reference an island.                                                      |
-| `session_attendance` | Student presence in a learning session.                                                | Composite primary key prevents duplicate attendance.                                                                   |
+| Entity               | Purpose                                                                                | Important relationships/invariants                                                                                                                                                                                                      |
+| -------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `schools`            | Pilot schools and villages.                                                            | Referenced by profiles and learning sessions.                                                                                                                                                                                           |
+| `profiles`           | Application identity linked one-to-one with `auth.users`.                              | Defaults to `student`; trusted SQL administration assigns staff roles and schools. `username` is set for student username/PIN accounts, must match `^[a-z0-9][a-z0-9._-]{2,31}$`, and is unique case-insensitively; staff keep it null. |
+| `islands`            | Gili Bidara, Gili Range, Gili Sarang content containers.                               | Stable text IDs are referenced by activities and sessions.                                                                                                                                                                              |
+| `badges`             | Initial learning/explorer achievement definitions.                                     | Activities reference one badge definition.                                                                                                                                                                                              |
+| `activities`         | Online and field guidebook activities.                                                 | Published activities belong to an island and badge; steps are JSON arrays.                                                                                                                                                              |
+| `submissions`        | Student reflection, optional/private evidence path, review state, and idempotency key. | Reflection minimum is enforced; client UUID is unique per student; only one pending/approved row per student/activity.                                                                                                                  |
+| `student_badges`     | Award event for a learning or explorer tier.                                           | Unique per student/badge/tier; may reference its source submission and reviewer.                                                                                                                                                        |
+| `learning_sessions`  | Teacher-recorded lesson/field delivery.                                                | Belongs to the staff member's school and may reference an island.                                                                                                                                                                       |
+| `session_attendance` | Student presence in a learning session.                                                | Composite primary key prevents duplicate attendance.                                                                                                                                                                                    |
 
 ## Database functions and triggers
 
@@ -94,6 +99,13 @@ Focused upgrades, in order, are:
 1. `supabase/migrations/20260822_offline_submission_sync.sql`
 2. `supabase/migrations/20260822_project_healthcheck.sql`
 3. `supabase/migrations/20260823_evidence_security_hardening.sql`
+4. `supabase/migrations/20260911_bilingual_content.sql`
+5. `supabase/migrations/20260911_translation_audit_followups.sql`
+6. `supabase/migrations/20260914_student_usernames.sql`
+
+The username migration adds a column, a format constraint, and a unique index only. **No policy or
+grant changes are needed:** the existing profile select policy already scopes visibility, `update`
+stays revoked from `authenticated`, and account creation writes through the secret-key client.
 
 After any database change, run:
 
@@ -123,11 +135,27 @@ Never commit database passwords, Supabase secret keys, `service_role` keys, user
 It must be random, contain at least 32 characters, and be stored in encrypted deployment settings and
 the UptimeRobot monitor—not in tracked source.
 
+`SUPABASE_SECRET_KEY` is the Supabase secret key (or legacy `service_role` key). It is optional —
+without it the rest of the application works and the Add students page explains that account
+creation is not set up — but it is required for teacher-managed student accounts. Rules:
+
+- MUST NOT be prefixed `NEXT_PUBLIC_`. Next.js inlines only `NEXT_PUBLIC_` variables into browser
+  bundles; any other variable stays on the server.
+- MUST be read only by `src/lib/supabase/admin.ts`, which imports `server-only`.
+- MUST be set only in `.env.local` and the hosting platform's encrypted server environment, never in
+  tracked source, GitHub Actions secrets for the health check, or documentation.
+- Release verification: after `npm run build`, `.next/static` must contain neither `sb_secret_` nor
+  the variable name.
+- If it is ever exposed, rotate it in the Supabase dashboard immediately.
+
 ## Operator checks
 
 - Confirm RLS remains enabled on every public application table.
 - Confirm the `evidence` bucket remains private.
-- Create users through Supabase Auth before assigning profile roles/schools.
+- Keep **Authentication → Sign In / Providers → Allow new users to sign up** turned off. Accounts are
+  created by staff; `npm run db:check` warns while public sign-up is enabled.
+- Create staff users through Supabase Auth before assigning profile roles/schools. Student accounts
+  are created in the app by teachers.
 - Promote staff only through a trusted SQL/operator workflow.
 - Review schema changes for both grants and RLS policies.
 - Test student, teacher, administrator, wrong-school, and unauthenticated paths before release.
