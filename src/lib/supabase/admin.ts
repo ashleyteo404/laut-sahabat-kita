@@ -11,7 +11,24 @@ import { getSupabaseEnv } from '@/lib/supabase/env'
  * account code. Callers are responsible for authorizing the signed-in user before using this client.
  */
 function readSecretKey(): string | null {
-  return process.env.SUPABASE_SECRET_KEY?.trim() || null
+  const value = process.env.SUPABASE_SECRET_KEY?.trim()
+  return value && isSecretKey(value) ? value : null
+}
+
+/**
+ * Accepts only keys that can call the admin API: the `sb_secret_…` format, or a legacy JWT whose role
+ * is `service_role`. A publishable or `anon` key pasted here by mistake would otherwise make every
+ * admin call fail with a generic error, so it is treated as "not configured" instead.
+ */
+function isSecretKey(value: string): boolean {
+  if (value.startsWith('sb_secret_')) return true
+  if (!value.startsWith('eyJ')) return false
+  try {
+    const payload = JSON.parse(Buffer.from(value.split('.')[1] ?? '', 'base64url').toString('utf8'))
+    return payload?.role === 'service_role'
+  } catch {
+    return false
+  }
 }
 
 export function isAccountAdminConfigured(): boolean {

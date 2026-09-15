@@ -23,10 +23,14 @@ export async function updateSession(request: NextRequest) {
 
   const { data } = await supabase.auth.getClaims()
   const isAuthenticated = Boolean(data?.claims?.sub)
-  const isPublicRoute = request.nextUrl.pathname.startsWith('/login')
-  const isApiRoute = request.nextUrl.pathname.startsWith('/api/')
+  const path = request.nextUrl.pathname
+  // Signed-in visitors are sent onward from these; signed-out visitors may use them.
+  const isPublicRoute = path.startsWith('/login') || path.startsWith('/forgot-password')
+  const isApiRoute = path.startsWith('/api/')
+  // The recovery-link handler must run whether or not someone is already signed in on this browser.
+  const isAuthCallback = path.startsWith('/auth/')
 
-  if (!isAuthenticated && !isPublicRoute && !isApiRoute) {
+  if (!isAuthenticated && !isPublicRoute && !isApiRoute && !isAuthCallback) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)

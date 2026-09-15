@@ -88,6 +88,23 @@ Staff sign in with an email address. Students sign in with a username and 6-digi
 `src/app/actions/auth.ts` treats an identifier without `@` as a username and maps it to a
 placeholder login address under the reserved `.invalid` domain, so no lookup happens before sign-in.
 
+### Staff password recovery
+
+1. `/forgot-password` (public) posts an email to `requestPasswordResetAction`, which calls
+   `resetPasswordForEmail` with `redirectTo` set to `/auth/confirm`. The response is identical whether
+   or not an account exists. Usernames and student placeholder addresses are refused, because a
+   student's PIN is reset by a teacher.
+2. The email link reaches `src/app/auth/confirm/route.ts`, which accepts either a `token_hash` (custom
+   email template; works on any device) or a PKCE `code` (default template; same browser only),
+   establishes a session, and redirects to the fixed path `/reset-password`. Query-string redirect
+   targets are never honored. An invalid or expired link goes to `/login?reset=invalid`.
+3. `/reset-password` requires a teacher or JARI administrator profile. `updatePasswordAction` enforces
+   8–72 characters and confirmation, updates the password, signs out the account's other sessions,
+   and continues to the dashboard.
+
+The proxy lets signed-out visitors reach `/forgot-password` and lets `/auth/*` run whether or not a
+session already exists.
+
 ### Student account provisioning
 
 1. A teacher or JARI administrator opens `/students/add` and enters rows by hand or loads a CSV,
