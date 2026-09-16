@@ -132,7 +132,9 @@ export const idUi: UiDictionary = {
   'activity.queued.autoUpload': 'Akan terunggah otomatis saat internet tersedia kembali.',
   'activity.queued.syncNow': 'Sinkronkan sekarang',
   'activity.queued.remove': 'Hapus',
-  'activity.confirmRemove': 'Hapus kiriman tersimpan ini beserta fotonya dari perangkat ini?',
+  'activity.confirmRemoveTitle': 'Hapus pekerjaan tersimpan?',
+  'activity.confirmRemove':
+    'Ini menghapus refleksi tersimpan beserta fotonya dari perangkat ini. Pekerjaan itu belum sampai ke gurumu, jadi tidak dapat dikembalikan.',
   'activity.photoLabel': 'Foto bukti',
   'activity.photoPrompt': 'Ketuk untuk menambahkan foto lapangan',
   'activity.photoHint': 'JPG, PNG, atau WebP · maksimal 3 MB',
@@ -243,11 +245,31 @@ export const idUi: UiDictionary = {
   'accounts.results.failedHeading': 'Tidak dibuat',
   'accounts.results.problem': 'Masalah',
   'accounts.reset.button': 'Atur ulang PIN',
+  'accounts.reset.title': 'Atur ulang PIN untuk {name}?',
+  'accounts.reset.body':
+    'PIN baru 6 angka akan dibuat dan hanya ditampilkan sekali. PIN lama langsung tidak berlaku, jadi beri tahu siswa PIN barunya.',
+  'accounts.reset.confirmButton': 'Buat PIN baru',
   'accounts.reset.pending': 'Mengatur ulang…',
-  'accounts.reset.confirm': 'Buat PIN baru untuk {name}? PIN lama tidak akan berlaku lagi.',
+  'accounts.reset.doneBody': 'Berikan PIN ini kepada siswa. PIN sebelumnya sudah tidak berlaku.',
   'accounts.reset.newPin': 'PIN baru',
   'accounts.reset.shownOnce': 'Hanya ditampilkan sekali. Catat sekarang.',
   'accounts.emailSignIn': 'Masuk dengan email',
+  'accounts.cancel': 'Batal',
+  'accounts.close': 'Tutup',
+  'accounts.edit.button': 'Ubah',
+  'accounts.edit.title': 'Ubah {name}',
+  'accounts.edit.intro':
+    'Di sini hanya nama dan kelas yang berubah. Nama pengguna dan PIN tetap sama.',
+  'accounts.edit.save': 'Simpan perubahan',
+  'accounts.edit.saving': 'Menyimpan…',
+  'accounts.delete.button': 'Hapus',
+  'accounts.delete.title': 'Hapus {name}?',
+  'accounts.delete.body':
+    'Akun dan data masuknya akan dihapus. Tidak ada data siswa ini yang disimpan.',
+  'accounts.delete.acknowledge': 'Saya paham tindakan ini tidak dapat dibatalkan.',
+  'accounts.delete.confirmButton': 'Hapus siswa',
+  'accounts.delete.pending': 'Menghapus…',
+  'accounts.delete.blocked': 'Siswa yang sudah memiliki pekerjaan tersimpan tidak dapat dihapus.',
 
   // ── Hasil proses masuk ──
   'action.login.invalidIdentifier': 'Masukkan alamat email atau nama penggunamu.',
@@ -348,6 +370,13 @@ export const idUi: UiDictionary = {
   'action.accounts.resetDone': 'PIN baru dibuat.',
   'action.accounts.resetNotAllowed': 'Kamu hanya bisa mengatur ulang PIN siswa di sekolahmu.',
   'action.accounts.resetFailed': 'PIN tidak dapat diatur ulang. Coba lagi.',
+  'action.accounts.notFound': 'Siswa itu tidak ada di sekolahmu.',
+  'action.accounts.updated': 'Data siswa tersimpan.',
+  'action.accounts.updateFailed': 'Perubahan tidak dapat disimpan. Coba lagi.',
+  'action.accounts.deleted': 'Siswa dihapus.',
+  'action.accounts.deleteHasWork':
+    'Siswa ini sudah memiliki pekerjaan tersimpan, jadi akunnya tidak dapat dihapus.',
+  'action.accounts.deleteFailed': 'Siswa tidak dapat dihapus. Coba lagi.',
 }
 
 const idServer: ServerDictionary = {
@@ -494,6 +523,7 @@ const idServer: ServerDictionary = {
   'students.col.badges': 'Lencana',
   'students.col.username': 'Nama pengguna',
   'students.col.signIn': 'Masuk',
+  'students.col.manage': 'Kelola',
   'students.addButton': 'Tambah siswa',
   'students.emptyTitle': 'Belum ada siswa yang terdaftar',
   'students.emptyBody': 'Gunakan Tambah siswa untuk membuat akun kelasmu.',

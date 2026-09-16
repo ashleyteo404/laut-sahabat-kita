@@ -17,6 +17,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import type { ActionMessageKey } from '@/lib/i18n/dictionaries/en'
 import type {
+  ActionState,
   CreatedStudentCredential,
   CreateStudentsState,
   Profile,
@@ -307,18 +308,21 @@ export async function createStudentAccounts(
   }
 }
 
-export async function resetStudentPin(actor: Profile, studentId: unknown): Promise<ResetPinState> {
-  const admin = createAdminClient()
-  if (!admin) return { status: 'error', messageKey: 'action.accounts.notConfigured' }
-  if (actor.role !== 'teacher' && actor.role !== 'jari_admin') {
-    return { status: 'error', messageKey: 'action.accounts.notAllowed' }
-  }
+/**
+ * Resolves a student the actor is allowed to manage, or null.
+ *
+ * The lookup runs through the signed-in user's own client, so row-level security decides visibility
+ * before the secret-key client is used at all.
+ */
+async function loadManageableStudent(
+  actor: Profile,
+  studentId: unknown,
+): Promise<{ id: string; school_id: string | null } | null> {
+  if (actor.role !== 'teacher' && actor.role !== 'jari_admin') return null
 
   const parsed = z.uuid().safeParse(studentId)
-  if (!parsed.success) return { status: 'error', messageKey: 'action.accounts.resetNotAllowed' }
+  if (!parsed.success) return null
 
-  // Read through the signed-in user's own client, so row-level security decides what is visible
-  // before the secret-key client is ever used.
   const supabase = await createClient()
   const { data: student } = await supabase
     .from('profiles')
@@ -328,13 +332,87 @@ export async function resetStudentPin(actor: Profile, studentId: unknown): Promi
 
   const sameSchool =
     actor.role === 'jari_admin' || (actor.school_id && student?.school_id === actor.school_id)
-  if (!student || student.role !== 'student' || !sameSchool) {
-    return { status: 'error', messageKey: 'action.accounts.resetNotAllowed' }
-  }
+  if (!student || student.role !== 'student' || !sameSchool) return null
+  return { id: student.id, school_id: student.school_id }
+}
+
+export async function resetStudentPin(actor: Profile, studentId: unknown): Promise<ResetPinState> {
+  const admin = createAdminClient()
+  if (!admin) return { status: 'error', messageKey: 'action.accounts.notConfigured' }
+
+  const student = await loadManageableStudent(actor, studentId)
+  if (!student) return { status: 'error', messageKey: 'action.accounts.resetNotAllowed' }
 
   const pin = generatePin()
   const { error } = await admin.auth.admin.updateUserById(student.id, { password: pin })
   if (error) return { status: 'error', messageKey: 'action.accounts.resetFailed' }
 
   return { status: 'success', messageKey: 'action.accounts.resetDone', pin }
+}
+
+/** Corrects a mistyped name or grade. Username and PIN are untouched, so sign-in keeps working. */
+export async function updateStudentDetails(
+  actor: Profile,
+  input: { studentId: unknown; fullName: string; grade: string },
+): Promise<ActionState> {
+  const admin = createAdminClient()
+  if (!admin) return { status: 'error', messageKey: 'action.accounts.notConfigured' }
+
+  const student = await loadManageableStudent(actor, input.studentId)
+  if (!student) return { status: 'error', messageKey: 'action.accounts.notFound' }
+
+  const fullName = input.fullName.trim().replace(/\s+/g, ' ')
+  const grade = input.grade.trim()
+  if (!fullName) return { status: 'error', messageKey: 'action.accounts.nameRequired' }
+  if (fullName.length > MAX_FULL_NAME_LENGTH) {
+    return { status: 'error', messageKey: 'action.accounts.nameTooLong' }
+  }
+  if (grade.length > MAX_GRADE_LENGTH) {
+    return { status: 'error', messageKey: 'action.accounts.gradeTooLong' }
+  }
+
+  const { error } = await admin
+    .from('profiles')
+    .update({ full_name: fullName, grade: grade || null })
+    .eq('id', student.id)
+  if (error) return { status: 'error', messageKey: 'action.accounts.updateFailed' }
+
+  return { status: 'success', messageKey: 'action.accounts.updated' }
+}
+
+/**
+ * Removes an account created by mistake. Deleting the auth user cascades to the profile and every
+ * record referencing it, so this is refused once a student has any work: a submission, a badge or
+ * recorded attendance. Counts run through the secret-key client rather than the actor's, so a row
+ * the actor cannot see still protects the account.
+ */
+export async function deleteStudent(actor: Profile, studentId: unknown): Promise<ActionState> {
+  const admin = createAdminClient()
+  if (!admin) return { status: 'error', messageKey: 'action.accounts.notConfigured' }
+
+  const student = await loadManageableStudent(actor, studentId)
+  if (!student) return { status: 'error', messageKey: 'action.accounts.notFound' }
+
+  const countFor = (table: string) =>
+    admin
+      .from(table)
+      .select('student_id', { count: 'exact', head: true })
+      .eq('student_id', student.id)
+
+  const [submissions, badges, attendance] = await Promise.all([
+    countFor('submissions'),
+    countFor('student_badges'),
+    countFor('session_attendance'),
+  ])
+  if (submissions.error || badges.error || attendance.error) {
+    return { status: 'error', messageKey: 'action.accounts.deleteFailed' }
+  }
+  if ((submissions.count ?? 0) + (badges.count ?? 0) + (attendance.count ?? 0) > 0) {
+    return { status: 'error', messageKey: 'action.accounts.deleteHasWork' }
+  }
+
+  const { error } = await admin.auth.admin.deleteUser(student.id)
+  if (error) return { status: 'error', messageKey: 'action.accounts.deleteFailed' }
+
+  return { status: 'success', messageKey: 'action.accounts.deleted' }
 }

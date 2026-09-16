@@ -163,6 +163,12 @@ SMTP before relying on it for real teachers.
 - Reset PIN: the old PIN stops working and the new one works; a teacher cannot reset a PIN for
   another school's student.
 - With `SUPABASE_SECRET_KEY` unset, Add students shows "not set up" and the rest of the app works.
+- **Edit:** correcting a name or grade on the Students page saves and appears in the table; the
+  student's username and PIN keep working afterwards.
+- **Delete:** a student with no work can be deleted, and their sign-in stops working. A student
+  with a submission, badge or recorded attendance shows the blocked note instead, and a forged
+  delete request for one is refused by the server.
+- A teacher cannot edit or delete another school's student.
 
 ### Learning workflow
 

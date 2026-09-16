@@ -663,6 +663,7 @@ grant select on public.profiles to authenticated;
 -- still needs table privileges, and this schema grants explicitly rather than relying on Supabase
 -- default privileges.
 grant select, insert, update on public.profiles to service_role;
+grant select on public.submissions, public.student_badges, public.session_attendance to service_role;
 grant select, insert on public.submissions to authenticated;
 grant select on public.student_badges to authenticated;
 grant select on public.learning_sessions, public.session_attendance to authenticated;

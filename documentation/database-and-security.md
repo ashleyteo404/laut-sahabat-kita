@@ -21,7 +21,11 @@ Security decisions follow these rules:
 - The database derives submission state and awards; the browser cannot choose them.
 - Learning-session school ownership is derived from the signed-in staff profile.
 - Student account creation derives role and school from the signed-in staff profile; a teacher can
-  only ever create `student` accounts, and only in their own school.
+  only ever create `student` accounts, and only in their own school. Editing and deleting resolve
+  the target through the actor's own RLS-scoped client first.
+- Deleting a student cascades to every record referencing them, so it is refused once a
+  submission, badge or attendance row exists. That count runs with the secret key, so a row the
+  actor cannot see still protects the account.
 
 ## Data model
 
