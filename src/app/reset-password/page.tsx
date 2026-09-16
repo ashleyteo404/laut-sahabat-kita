@@ -1,20 +1,24 @@
 import type { Metadata } from 'next'
-import { LoginForm } from '@/components/auth/login-form'
+import { ResetPasswordForm } from '@/components/auth/reset-password-form'
 import { LocaleSwitcher } from '@/components/i18n/locale-switcher'
+import { requireProfile } from '@/lib/auth'
 import { getTranslator } from '@/lib/i18n/server'
+import { createClient } from '@/lib/supabase/server'
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslator()
-  return { title: t('meta.login.title') }
+  return { title: t('meta.reset.title') }
 }
 
-export default async function LoginPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}) {
+export default async function ResetPasswordPage() {
+  // Signed-out visitors go to /login and students to /dashboard; a student's PIN is reset by a teacher.
+  await requireProfile(['teacher', 'jari_admin'])
   const t = await getTranslator()
-  const resetLinkInvalid = (await searchParams).reset === 'invalid'
+
+  const supabase = await createClient()
+  const { data } = await supabase.auth.getClaims()
+  const email = typeof data?.claims?.email === 'string' ? data.claims.email : null
+
   return (
     <main className="auth-page">
       <section className="auth-story">
@@ -28,7 +32,6 @@ export default async function LoginPage({
         <div>
           <span className="hero-kicker">{t('loginPage.kicker')}</span>
           <h1>{t('loginPage.heading')}</h1>
-          <p>{t('loginPage.intro')}</p>
         </div>
         <small>{t('loginPage.islands')}</small>
       </section>
@@ -36,12 +39,7 @@ export default async function LoginPage({
         <div className="auth-locale">
           <LocaleSwitcher />
         </div>
-        {resetLinkInvalid ? (
-          <p className="auth-notice" role="alert">
-            {t('loginPage.resetLinkInvalid')}
-          </p>
-        ) : null}
-        <LoginForm />
+        <ResetPasswordForm email={email} />
       </section>
     </main>
   )

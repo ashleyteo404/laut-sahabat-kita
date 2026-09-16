@@ -48,6 +48,21 @@ You can safely run the script again when updating pilot content. Do not manually
 
 Public self-registration is intentionally not part of this app. Leaving sign-up enabled lets anyone with the project URL and publishable key create an account directly through the Supabase API, without the app. `npm run db:check` warns while it is enabled.
 
+### Teacher password reset emails
+
+Teachers and administrators can reset a forgotten password from **Teacher? Forgot your password** on the sign-in page. The email link returns to `/auth/confirm`, which the **Redirect URLs** entry above already allows.
+
+- **Works immediately, same browser only:** with Supabase's default email template, the link must be opened in the browser that requested it.
+- **Recommended, works on any device:** open **Authentication → Emails → Reset Password** and change the link in the template to:
+
+  ```html
+  <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery">Reset password</a>
+  ```
+
+  **Site URL** must be the app's address (`http://localhost:3000` locally) for this link to work.
+
+Supabase's built-in email sender is heavily rate-limited and may only deliver to members of your Supabase organization. For development, test with a teacher account whose email you can receive. Configure custom SMTP under **Authentication → Emails** before teachers rely on it. Students have no email address; a teacher resets a student's PIN instead.
+
 ## 4. Create the first teacher
 
 Teacher and JARI administrator accounts are created by an administrator in Supabase. Student accounts are created by teachers inside the app (step 5 onwards).
@@ -149,6 +164,8 @@ returning id;
 - **Profile not found:** the user was created before the schema trigger. Run the assignment query; insert a matching profile first if necessary.
 - **Add students says account creation is not set up:** add `SUPABASE_SECRET_KEY` to the server environment and restart or redeploy.
 - **A student forgot their PIN:** a teacher opens **Students** and selects **Reset PIN** on that student. The new PIN is shown once.
+- **A teacher forgot their password:** use **Teacher? Forgot your password** on the sign-in page. If no email arrives, check spam and **Authentication → Logs**, or an administrator can set a new password under **Authentication → Users**.
+- **Reset link says invalid or expired:** links are single-use and time-limited. Request another, and with the default email template open it in the same browser.
 - **Creating students fails with a database error:** run `supabase/migrations/20260914_student_usernames.sql`.
 - **Teacher sees no students:** verify both teacher and students have the same `school_id`.
 - **Photo upload is denied:** confirm the `evidence` bucket and its policies were created by `schema.sql`, the user is signed in, and the image is an allowed type under 3 MB.

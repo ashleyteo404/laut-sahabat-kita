@@ -88,6 +88,28 @@ export const idUi: UiDictionary = {
   'login.submit': 'Masuk →',
   'login.submitPending': 'Sedang masuk…',
   'login.footnote': 'Guru dan siswa menggunakan cara masuk aman yang sama.',
+  'login.forgotLink': 'Guru? Lupa kata sandi',
+
+  // ── Atur ulang kata sandi (staf) ──
+  'forgot.eyebrow': 'Guru dan administrator',
+  'forgot.heading': 'Atur ulang kata sandi',
+  'forgot.intro':
+    'Masukkan alamat email yang kamu pakai untuk masuk. Jika cocok dengan sebuah akun, kami akan mengirim tautan untuk membuat kata sandi baru.',
+  'forgot.emailLabel': 'Alamat email',
+  'forgot.emailPlaceholder': 'nama@sekolah.org',
+  'forgot.submit': 'Kirim tautan',
+  'forgot.submitPending': 'Mengirim…',
+  'forgot.studentNote':
+    'Siswa masuk dengan nama pengguna dan PIN. Jika lupa PIN, minta gurumu mengatur ulang.',
+  'forgot.backToLogin': '← Kembali ke halaman masuk',
+  'reset.eyebrow': 'Keamanan akun',
+  'reset.heading': 'Buat kata sandi baru',
+  'reset.intro':
+    'Gunakan minimal 8 karakter. Setelah disimpan, akunmu akan keluar dari perangkat lain.',
+  'reset.passwordLabel': 'Kata sandi baru',
+  'reset.confirmLabel': 'Ulangi kata sandi baru',
+  'reset.submit': 'Simpan kata sandi',
+  'reset.submitPending': 'Menyimpan…',
 
   // ── Kartu aktivitas ──
   'activity.mode.field': 'Kegiatan lapangan',
@@ -237,6 +259,23 @@ export const idUi: UiDictionary = {
   'action.login.tooManyAttempts': 'Terlalu banyak percobaan masuk. Tunggu sebentar lalu coba lagi.',
   'action.login.failed': 'Proses masuk tidak dapat diselesaikan. Coba lagi sebentar lagi.',
 
+  // ── Hasil atur ulang kata sandi ──
+  'action.forgot.sent':
+    'Jika email itu milik akun guru atau administrator, tautan untuk mengatur ulang sedang dikirim. Periksa kotak masuk dan folder spam.',
+  'action.forgot.invalidEmail': 'Masukkan alamat email yang valid.',
+  'action.forgot.studentAccount':
+    'Siswa tidak dapat mengatur ulang PIN lewat email. Minta gurumu mengatur ulang.',
+  'action.forgot.tooManyRequests':
+    'Terlalu banyak permintaan. Tunggu beberapa menit lalu coba lagi.',
+  'action.forgot.failed':
+    'Email tidak dapat dikirim. Coba lagi nanti atau hubungi administrator JARI.',
+  'action.reset.tooShort': 'Gunakan minimal 8 karakter.',
+  'action.reset.tooLong': 'Gunakan maksimal 72 karakter.',
+  'action.reset.mismatch': 'Kedua kata sandi tidak sama.',
+  'action.reset.samePassword': 'Pilih kata sandi yang berbeda dari yang sekarang.',
+  'action.reset.weak': 'Kata sandi itu terlalu mudah ditebak. Pilih yang lebih kuat.',
+  'action.reset.failed': 'Kata sandi tidak dapat disimpan. Minta tautan baru lalu coba lagi.',
+
   // ── Hasil tinjauan ──
   'action.review.noteRequired': 'Tambahkan catatan singkat tentang apa yang perlu siswa perbaiki.',
   'action.review.invalid': 'Periksa rincian tinjauan lalu coba lagi.',
@@ -318,6 +357,8 @@ const idServer: ServerDictionary = {
   'meta.title.template': '%s · Laut Sahabat Kita',
   'meta.description': 'Teman belajar lapangan dan daring untuk Laut Sahabat Kita.',
   'meta.login.title': 'Masuk',
+  'meta.forgot.title': 'Atur ulang kata sandi',
+  'meta.reset.title': 'Kata sandi baru',
   'meta.dashboard.title': 'Dasbor',
   'meta.explore.title': 'Jelajah',
   'meta.passport.title': 'Pasporku',
@@ -335,6 +376,8 @@ const idServer: ServerDictionary = {
   'loginPage.intro':
     'Belajar daring, menjelajah di luar ruang, catat apa yang kamu perhatikan, dan kembangkan Paspor Laut Digitalmu dari waktu ke waktu.',
   'loginPage.islands': 'Gili Bidara · Gili Range · Gili Sarang',
+  'loginPage.resetLinkInvalid':
+    'Tautan atur ulang tidak valid atau sudah kedaluwarsa. Minta tautan baru.',
 
   // ── Dasbor siswa ──
   'dashboard.student.kicker': 'Perjalanan lautmu berlanjut',
