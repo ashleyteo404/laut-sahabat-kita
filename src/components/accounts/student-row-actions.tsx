@@ -1,5 +1,6 @@
 'use client'
 
+import { Pencil, Trash2 } from 'lucide-react'
 import { useActionState, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { deleteStudentAction, updateStudentAction } from '@/app/actions/accounts'
@@ -19,21 +20,25 @@ function SaveButton() {
   )
 }
 
+/** Icon-only, so the label lives in `aria-label` and `title` for screen readers and hover. */
 function DeleteButton({ studentName }: { studentName: string }) {
   const { pending } = useFormStatus()
   const t = useT()
+  const label = pending ? t('accounts.delete.pending') : t('accounts.delete.button')
   return (
     <button
-      className="btn outline sm danger"
+      className="icon-btn danger"
       type="submit"
       disabled={pending}
+      aria-label={label}
+      title={label}
       onClick={(event) => {
         if (!window.confirm(t('accounts.delete.confirm', { name: studentName }))) {
           event.preventDefault()
         }
       }}
     >
-      {pending ? t('accounts.delete.pending') : t('accounts.delete.button')}
+      <Trash2 aria-hidden="true" size={15} />
     </button>
   )
 }
@@ -98,20 +103,39 @@ export function StudentRowActions({
             </small>
           ) : null}
         </form>
-      ) : (
-        <button className="btn outline sm" type="button" onClick={() => setEditing(true)}>
-          {t('accounts.edit.button')}
-        </button>
-      )}
+      ) : null}
 
-      {canDelete ? (
-        <form action={deleteAction}>
-          <input type="hidden" name="studentId" value={student.id} />
-          <DeleteButton studentName={student.fullName} />
-        </form>
-      ) : (
-        <small className="muted">{t('accounts.delete.blocked')}</small>
-      )}
+      <div className="row-action-buttons">
+        {editing ? null : (
+          <button
+            className="icon-btn"
+            type="button"
+            aria-label={t('accounts.edit.button')}
+            title={t('accounts.edit.button')}
+            onClick={() => setEditing(true)}
+          >
+            <Pencil aria-hidden="true" size={15} />
+          </button>
+        )}
+
+        {canDelete ? (
+          <form action={deleteAction}>
+            <input type="hidden" name="studentId" value={student.id} />
+            <DeleteButton studentName={student.fullName} />
+          </form>
+        ) : (
+          // Kept visible but disabled, so the row explains why deletion is unavailable.
+          <button
+            className="icon-btn danger"
+            type="button"
+            disabled
+            aria-label={t('accounts.delete.blocked')}
+            title={t('accounts.delete.blocked')}
+          >
+            <Trash2 aria-hidden="true" size={15} />
+          </button>
+        )}
+      </div>
 
       {deleteState.status === 'error' ? (
         <small className="form-error" role="alert">

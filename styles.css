@@ -2127,7 +2127,30 @@ select:focus-visible {
   display: grid;
   gap: 6px;
   justify-items: start;
-  min-width: 150px;
+  min-width: 96px;
+}
+.row-action-buttons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--paper);
+  color: var(--deep);
+}
+.icon-btn:disabled {
+  opacity: 0.4;
+}
+.icon-btn.danger {
+  color: #a04c3c;
+  border-color: #e0bdb4;
 }
 .inline-edit {
   display: grid;
