@@ -243,12 +243,17 @@ export const idUi: UiDictionary = {
   'accounts.results.failedHeading': 'Tidak dibuat',
   'accounts.results.problem': 'Masalah',
   'accounts.reset.button': 'Atur ulang PIN',
+  'accounts.reset.title': 'Atur ulang PIN untuk {name}?',
+  'accounts.reset.body':
+    'PIN baru 6 angka akan dibuat dan hanya ditampilkan sekali. PIN lama langsung tidak berlaku, jadi beri tahu siswa PIN barunya.',
+  'accounts.reset.confirmButton': 'Buat PIN baru',
   'accounts.reset.pending': 'Mengatur ulang…',
-  'accounts.reset.confirm': 'Buat PIN baru untuk {name}? PIN lama tidak akan berlaku lagi.',
+  'accounts.reset.doneBody': 'Berikan PIN ini kepada siswa. PIN sebelumnya sudah tidak berlaku.',
   'accounts.reset.newPin': 'PIN baru',
   'accounts.reset.shownOnce': 'Hanya ditampilkan sekali. Catat sekarang.',
   'accounts.emailSignIn': 'Masuk dengan email',
   'accounts.cancel': 'Batal',
+  'accounts.close': 'Tutup',
   'accounts.edit.button': 'Ubah',
   'accounts.edit.title': 'Ubah {name}',
   'accounts.edit.intro':

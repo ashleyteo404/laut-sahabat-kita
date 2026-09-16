@@ -2207,3 +2207,21 @@ select:focus-visible {
 .btn.danger-solid:disabled {
   opacity: 0.45;
 }
+
+.pin-display {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper);
+}
+.pin-display span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.pin-display strong {
+  font-size: 22px;
+}

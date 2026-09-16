@@ -244,12 +244,17 @@ export const enUiSource = {
   'accounts.results.failedHeading': 'Not created',
   'accounts.results.problem': 'Problem',
   'accounts.reset.button': 'Reset PIN',
+  'accounts.reset.title': 'Reset the PIN for {name}?',
+  'accounts.reset.body':
+    'A new 6-digit PIN is created and shown once. Their current PIN stops working straight away, so tell them the new one.',
+  'accounts.reset.confirmButton': 'Create new PIN',
   'accounts.reset.pending': 'Resetting…',
-  'accounts.reset.confirm': 'Create a new PIN for {name}? Their current PIN will stop working.',
+  'accounts.reset.doneBody': 'Give this PIN to the student. Their previous PIN no longer works.',
   'accounts.reset.newPin': 'New PIN',
   'accounts.reset.shownOnce': 'Shown once. Write it down now.',
   'accounts.emailSignIn': 'Email sign-in',
   'accounts.cancel': 'Cancel',
+  'accounts.close': 'Close',
   'accounts.edit.button': 'Edit',
   'accounts.edit.title': 'Edit {name}',
   'accounts.edit.intro':
