@@ -132,7 +132,9 @@ export const idUi: UiDictionary = {
   'activity.queued.autoUpload': 'Akan terunggah otomatis saat internet tersedia kembali.',
   'activity.queued.syncNow': 'Sinkronkan sekarang',
   'activity.queued.remove': 'Hapus',
-  'activity.confirmRemove': 'Hapus kiriman tersimpan ini beserta fotonya dari perangkat ini?',
+  'activity.confirmRemoveTitle': 'Hapus pekerjaan tersimpan?',
+  'activity.confirmRemove':
+    'Ini menghapus refleksi tersimpan beserta fotonya dari perangkat ini. Pekerjaan itu belum sampai ke gurumu, jadi tidak dapat dikembalikan.',
   'activity.photoLabel': 'Foto bukti',
   'activity.photoPrompt': 'Ketuk untuk menambahkan foto lapangan',
   'activity.photoHint': 'JPG, PNG, atau WebP · maksimal 3 MB',

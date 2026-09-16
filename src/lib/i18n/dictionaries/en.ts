@@ -135,7 +135,9 @@ export const enUiSource = {
   'activity.queued.autoUpload': 'It will upload automatically when internet access returns.',
   'activity.queued.syncNow': 'Sync now',
   'activity.queued.remove': 'Remove',
-  'activity.confirmRemove': 'Remove this saved submission and its photo from this device?',
+  'activity.confirmRemoveTitle': 'Remove saved work?',
+  'activity.confirmRemove':
+    'This removes the saved reflection and its photo from this device. It has not reached your teacher yet, so it cannot be recovered.',
   'activity.photoLabel': 'Photo evidence',
   'activity.photoPrompt': 'Tap to add a field photo',
   'activity.photoHint': 'JPG, PNG, or WebP · maximum 3 MB',

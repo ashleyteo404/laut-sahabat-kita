@@ -56,6 +56,7 @@ export function ActivityCard({
   studentId: string
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const removeDialogRef = useRef<HTMLDialogElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
   const reflectionRef = useRef<HTMLTextAreaElement>(null)
   const router = useRouter()
@@ -207,7 +208,7 @@ export function ActivityCard({
 
   async function discardQueuedSubmission() {
     if (!queuedSubmission) return
-    if (!window.confirm(t('activity.confirmRemove'))) return
+    removeDialogRef.current?.close()
     try {
       await removeQueuedSubmission(queuedSubmission.id)
       setQueuedSubmission(null)
@@ -310,7 +311,7 @@ export function ActivityCard({
                       className="btn outline sm"
                       type="button"
                       disabled={saving}
-                      onClick={discardQueuedSubmission}
+                      onClick={() => removeDialogRef.current?.showModal()}
                     >
                       <Trash2 size={14} /> {t('activity.queued.remove')}
                     </button>
@@ -373,6 +374,43 @@ export function ActivityCard({
               </div>
             </form>
           )}
+        </div>
+      </dialog>
+      <dialog
+        className="activity-dialog"
+        ref={removeDialogRef}
+        onClick={(event) => {
+          if (event.target === removeDialogRef.current) removeDialogRef.current.close()
+        }}
+      >
+        <div className="modal-head">
+          <div>
+            <span className="eyebrow">{t('activity.queued.remove')}</span>
+            <h2>{t('activity.confirmRemoveTitle')}</h2>
+          </div>
+          <button
+            className="close"
+            type="button"
+            aria-label={t('activity.cancel')}
+            onClick={() => removeDialogRef.current?.close()}
+          >
+            ×
+          </button>
+        </div>
+        <div className="modal-body">
+          <p>{t('activity.confirmRemove')}</p>
+          <div className="modal-actions">
+            <button
+              className="btn outline"
+              type="button"
+              onClick={() => removeDialogRef.current?.close()}
+            >
+              {t('activity.cancel')}
+            </button>
+            <button className="btn danger-solid" type="button" onClick={discardQueuedSubmission}>
+              {t('activity.queued.remove')}
+            </button>
+          </div>
         </div>
       </dialog>
     </>
