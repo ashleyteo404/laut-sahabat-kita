@@ -248,14 +248,20 @@ export const idUi: UiDictionary = {
   'accounts.reset.newPin': 'PIN baru',
   'accounts.reset.shownOnce': 'Hanya ditampilkan sekali. Catat sekarang.',
   'accounts.emailSignIn': 'Masuk dengan email',
+  'accounts.cancel': 'Batal',
   'accounts.edit.button': 'Ubah',
+  'accounts.edit.title': 'Ubah {name}',
+  'accounts.edit.intro':
+    'Di sini hanya nama dan kelas yang berubah. Nama pengguna dan PIN tetap sama.',
   'accounts.edit.save': 'Simpan perubahan',
   'accounts.edit.saving': 'Menyimpan…',
-  'accounts.edit.close': 'Tutup',
   'accounts.delete.button': 'Hapus',
+  'accounts.delete.title': 'Hapus {name}?',
+  'accounts.delete.body':
+    'Akun dan data masuknya akan dihapus. Tidak ada data siswa ini yang disimpan.',
+  'accounts.delete.acknowledge': 'Saya paham tindakan ini tidak dapat dibatalkan.',
+  'accounts.delete.confirmButton': 'Hapus siswa',
   'accounts.delete.pending': 'Menghapus…',
-  'accounts.delete.confirm':
-    'Hapus {name}? Akun dan data masuknya akan dihapus. Tindakan ini tidak dapat dibatalkan.',
   'accounts.delete.blocked': 'Siswa yang sudah memiliki pekerjaan tersimpan tidak dapat dihapus.',
 
   // ── Hasil proses masuk ──

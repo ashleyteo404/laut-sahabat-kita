@@ -249,14 +249,20 @@ export const enUiSource = {
   'accounts.reset.newPin': 'New PIN',
   'accounts.reset.shownOnce': 'Shown once. Write it down now.',
   'accounts.emailSignIn': 'Email sign-in',
+  'accounts.cancel': 'Cancel',
   'accounts.edit.button': 'Edit',
+  'accounts.edit.title': 'Edit {name}',
+  'accounts.edit.intro':
+    'Only the name and class change here. Their username and PIN stay the same.',
   'accounts.edit.save': 'Save changes',
   'accounts.edit.saving': 'Saving…',
-  'accounts.edit.close': 'Close',
   'accounts.delete.button': 'Delete',
+  'accounts.delete.title': 'Delete {name}?',
+  'accounts.delete.body':
+    'Their account and sign-in are removed. Nothing about this student is kept.',
+  'accounts.delete.acknowledge': 'I understand this cannot be undone.',
+  'accounts.delete.confirmButton': 'Delete student',
   'accounts.delete.pending': 'Deleting…',
-  'accounts.delete.confirm':
-    'Delete {name}? Their account and sign-in are removed. This cannot be undone.',
   'accounts.delete.blocked': 'Students with saved work cannot be deleted.',
 
   // ── Sign-in results ──
