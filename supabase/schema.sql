@@ -659,6 +659,10 @@ grant select on public.schools, public.islands, public.badges, public.activities
 revoke all on public.translation_review_queue from anon, authenticated;
 revoke update on public.profiles from authenticated;
 grant select on public.profiles to authenticated;
+-- Account management runs as `service_role` with the server-only secret key. It bypasses RLS but
+-- still needs table privileges, and this schema grants explicitly rather than relying on Supabase
+-- default privileges.
+grant select, insert, update on public.profiles to service_role;
 grant select, insert on public.submissions to authenticated;
 grant select on public.student_badges to authenticated;
 grant select on public.learning_sessions, public.session_attendance to authenticated;

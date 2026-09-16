@@ -140,6 +140,7 @@ request them directly.
 | `supabase/migrations/20260911_bilingual_content.sql`           | Adds Bahasa Indonesia content columns, translation review timestamps, the staleness trigger, the operator review queue view, and Indonesian pilot content.                                                                             |
 | `supabase/migrations/20260911_translation_audit_followups.sql` | Relaxes the translated-steps constraint to a shape check so English content stays independently editable, and drops the unnecessary privilege elevation on the staleness trigger.                                                      |
 | `supabase/migrations/20260914_student_usernames.sql`           | Adds the student `username` column with its format constraint and case-insensitive unique index. No policy or grant changes.                                                                                                           |
+| `supabase/migrations/20260916_service_role_profile_grants.sql` | Grants `service_role` the profile privileges account management needs; it bypasses RLS but not table grants.                                                                                                                           |
 
 ## Existing operator documentation
 

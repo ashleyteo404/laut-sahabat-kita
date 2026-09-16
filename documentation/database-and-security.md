@@ -102,6 +102,11 @@ Focused upgrades, in order, are:
 4. `supabase/migrations/20260911_bilingual_content.sql`
 5. `supabase/migrations/20260911_translation_audit_followups.sql`
 6. `supabase/migrations/20260914_student_usernames.sql`
+7. `supabase/migrations/20260916_service_role_profile_grants.sql`
+
+`service_role` bypasses row-level security but still needs table privileges, and this schema grants
+explicitly rather than relying on Supabase's default privileges. Without the grants in migration 7,
+creating a student account fails with `42501 permission denied for table profiles`.
 
 The username migration adds a column, a format constraint, and a unique index only. **No policy or
 grant changes are needed:** the existing profile select policy already scopes visibility, `update`
