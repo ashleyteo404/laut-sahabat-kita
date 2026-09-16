@@ -248,6 +248,15 @@ export const idUi: UiDictionary = {
   'accounts.reset.newPin': 'PIN baru',
   'accounts.reset.shownOnce': 'Hanya ditampilkan sekali. Catat sekarang.',
   'accounts.emailSignIn': 'Masuk dengan email',
+  'accounts.edit.button': 'Ubah',
+  'accounts.edit.save': 'Simpan perubahan',
+  'accounts.edit.saving': 'Menyimpan…',
+  'accounts.edit.close': 'Tutup',
+  'accounts.delete.button': 'Hapus',
+  'accounts.delete.pending': 'Menghapus…',
+  'accounts.delete.confirm':
+    'Hapus {name}? Akun dan data masuknya akan dihapus. Tindakan ini tidak dapat dibatalkan.',
+  'accounts.delete.blocked': 'Siswa yang sudah memiliki pekerjaan tersimpan tidak dapat dihapus.',
 
   // ── Hasil proses masuk ──
   'action.login.invalidIdentifier': 'Masukkan alamat email atau nama penggunamu.',
@@ -348,6 +357,13 @@ export const idUi: UiDictionary = {
   'action.accounts.resetDone': 'PIN baru dibuat.',
   'action.accounts.resetNotAllowed': 'Kamu hanya bisa mengatur ulang PIN siswa di sekolahmu.',
   'action.accounts.resetFailed': 'PIN tidak dapat diatur ulang. Coba lagi.',
+  'action.accounts.notFound': 'Siswa itu tidak ada di sekolahmu.',
+  'action.accounts.updated': 'Data siswa tersimpan.',
+  'action.accounts.updateFailed': 'Perubahan tidak dapat disimpan. Coba lagi.',
+  'action.accounts.deleted': 'Siswa dihapus.',
+  'action.accounts.deleteHasWork':
+    'Siswa ini sudah memiliki pekerjaan tersimpan, jadi akunnya tidak dapat dihapus.',
+  'action.accounts.deleteFailed': 'Siswa tidak dapat dihapus. Coba lagi.',
 }
 
 const idServer: ServerDictionary = {
@@ -494,6 +510,7 @@ const idServer: ServerDictionary = {
   'students.col.badges': 'Lencana',
   'students.col.username': 'Nama pengguna',
   'students.col.signIn': 'Masuk',
+  'students.col.manage': 'Kelola',
   'students.addButton': 'Tambah siswa',
   'students.emptyTitle': 'Belum ada siswa yang terdaftar',
   'students.emptyBody': 'Gunakan Tambah siswa untuk membuat akun kelasmu.',

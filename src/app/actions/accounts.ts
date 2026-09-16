@@ -2,8 +2,14 @@
 
 import { revalidatePath } from 'next/cache'
 import { requireProfile } from '@/lib/auth'
-import { createStudentAccounts, resetStudentPin, submittedRowsSchema } from '@/lib/accounts/server'
-import type { CreateStudentsState, ResetPinState } from '@/lib/types'
+import {
+  createStudentAccounts,
+  deleteStudent,
+  resetStudentPin,
+  submittedRowsSchema,
+  updateStudentDetails,
+} from '@/lib/accounts/server'
+import type { ActionState, CreateStudentsState, ResetPinState } from '@/lib/types'
 
 // Every action re-authorizes. A Server Action is a public POST endpoint, so only rendering the form
 // for staff is not a security boundary.
@@ -50,4 +56,38 @@ export async function resetStudentPinAction(
 ): Promise<ResetPinState> {
   const actor = await requireProfile(['teacher', 'jari_admin'])
   return resetStudentPin(actor, formData.get('studentId'))
+}
+
+export async function updateStudentAction(
+  _previousState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const actor = await requireProfile(['teacher', 'jari_admin'])
+  const result = await updateStudentDetails(actor, {
+    studentId: formData.get('studentId'),
+    fullName: String(formData.get('fullName') ?? ''),
+    grade: String(formData.get('grade') ?? ''),
+  })
+
+  if (result.status === 'success') {
+    revalidatePath('/students')
+    revalidatePath('/dashboard')
+    revalidatePath('/review')
+  }
+  return result
+}
+
+export async function deleteStudentAction(
+  _previousState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const actor = await requireProfile(['teacher', 'jari_admin'])
+  const result = await deleteStudent(actor, formData.get('studentId'))
+
+  if (result.status === 'success') {
+    revalidatePath('/students')
+    revalidatePath('/dashboard')
+    revalidatePath('/programme')
+  }
+  return result
 }

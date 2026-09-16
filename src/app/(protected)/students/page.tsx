@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ResetPinButton } from '@/components/accounts/reset-pin-button'
+import { StudentRowActions } from '@/components/accounts/student-row-actions'
 import { getWorkspaceData } from '@/lib/data'
 import { requireProfile } from '@/lib/auth'
 import { getTranslator } from '@/lib/i18n/server'
@@ -42,7 +43,12 @@ export default async function StudentsPage() {
                 <th>{t('students.col.username')}</th>
                 <th>{t('students.col.activities')}</th>
                 <th>{t('students.col.badges')}</th>
-                {canManageAccounts ? <th>{t('students.col.signIn')}</th> : null}
+                {canManageAccounts ? (
+                  <>
+                    <th>{t('students.col.signIn')}</th>
+                    <th>{t('students.col.manage')}</th>
+                  </>
+                ) : null}
               </tr>
             </thead>
             <tbody>
@@ -51,6 +57,12 @@ export default async function StudentsPage() {
                   (item) => item.student_id === student.id && item.status === 'approved',
                 ).length
                 const awards = data.awards.filter((item) => item.student_id === student.id).length
+                // Deleting cascades to every record referencing the student, so it is only offered
+                // while there is nothing to lose. The server checks this again.
+                const hasWork =
+                  data.submissions.some((item) => item.student_id === student.id) ||
+                  data.awards.some((item) => item.student_id === student.id) ||
+                  data.attendance.some((item) => item.student_id === student.id)
                 return (
                   <tr key={student.id}>
                     <td>
@@ -68,12 +80,27 @@ export default async function StudentsPage() {
                     </td>
                     <td>{awards}</td>
                     {canManageAccounts ? (
-                      <td>
-                        {/* PIN reset applies to username accounts; email accounts stay with the admin. */}
-                        {student.username ? (
-                          <ResetPinButton studentId={student.id} studentName={student.full_name} />
-                        ) : null}
-                      </td>
+                      <>
+                        <td>
+                          {/* PIN reset applies to username accounts; email accounts stay with the admin. */}
+                          {student.username ? (
+                            <ResetPinButton
+                              studentId={student.id}
+                              studentName={student.full_name}
+                            />
+                          ) : null}
+                        </td>
+                        <td>
+                          <StudentRowActions
+                            student={{
+                              id: student.id,
+                              fullName: student.full_name,
+                              grade: student.grade,
+                            }}
+                            canDelete={!hasWork}
+                          />
+                        </td>
+                      </>
                     ) : null}
                   </tr>
                 )

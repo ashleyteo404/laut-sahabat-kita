@@ -7,3 +7,7 @@
 -- `service_role` is reachable only from server code holding SUPABASE_SECRET_KEY.
 
 grant select, insert, update on public.profiles to service_role;
+
+-- Deleting a student is refused when they already have work. Those counts run with the secret key so
+-- a row the signed-in teacher cannot see still protects the account, which needs read access here.
+grant select on public.submissions, public.student_badges, public.session_attendance to service_role;

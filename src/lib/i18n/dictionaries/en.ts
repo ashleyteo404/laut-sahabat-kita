@@ -249,6 +249,15 @@ export const enUiSource = {
   'accounts.reset.newPin': 'New PIN',
   'accounts.reset.shownOnce': 'Shown once. Write it down now.',
   'accounts.emailSignIn': 'Email sign-in',
+  'accounts.edit.button': 'Edit',
+  'accounts.edit.save': 'Save changes',
+  'accounts.edit.saving': 'Saving…',
+  'accounts.edit.close': 'Close',
+  'accounts.delete.button': 'Delete',
+  'accounts.delete.pending': 'Deleting…',
+  'accounts.delete.confirm':
+    'Delete {name}? Their account and sign-in are removed. This cannot be undone.',
+  'accounts.delete.blocked': 'Students with saved work cannot be deleted.',
 
   // ── Sign-in results ──
   'action.login.invalidIdentifier': 'Enter your email address or username.',
@@ -349,6 +358,13 @@ export const enUiSource = {
   'action.accounts.resetDone': 'New PIN created.',
   'action.accounts.resetNotAllowed': 'You can only reset PINs for students in your school.',
   'action.accounts.resetFailed': 'The PIN could not be reset. Try again.',
+  'action.accounts.notFound': 'That student is not in your school.',
+  'action.accounts.updated': 'Student details saved.',
+  'action.accounts.updateFailed': 'The changes could not be saved. Try again.',
+  'action.accounts.deleted': 'Student deleted.',
+  'action.accounts.deleteHasWork':
+    'This student already has saved work, so the account cannot be deleted.',
+  'action.accounts.deleteFailed': 'The student could not be deleted. Try again.',
 } as const
 
 export const enServerSource = {
@@ -494,6 +510,7 @@ export const enServerSource = {
   'students.col.badges': 'Badges',
   'students.col.username': 'Username',
   'students.col.signIn': 'Sign-in',
+  'students.col.manage': 'Manage',
   'students.addButton': 'Add students',
   'students.emptyTitle': 'No students assigned',
   'students.emptyBody': 'Use Add students to create accounts for your class.',
